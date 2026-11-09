@@ -1,0 +1,30 @@
+{
+  "profileUrl": "https://www.linkedin.com/in/hairyisme",
+  "updatedAt": "2026-11-09T00:00:00Z",
+  "posts": [
+    {
+      "id": "site-2026-11-aurewas-foi",
+      "source": "site",
+      "url": "",
+      "date": "2026-11-08",
+      "text": "AUREWAS is heading to Festival Idea Putrajaya 2026 — Innovation Challenge (18 November). Our PLC-based conveyor automatically separates metal, plastic and paper using inductive, capacitive and photoelectric sensors.",
+      "image": ""
+    },
+    {
+      "id": "site-2026-10-ningbo",
+      "source": "site",
+      "url": "",
+      "date": "2026-10-24",
+      "text": "Represented UniMAP at the 2026 Ningbo International University Students & Sister Cities Youth Exchange Camp, hosted by Ningbo Polytechnic University in Zhejiang, China (18 – 24 October).",
+      "image": ""
+    },
+    {
+      "id": "site-2026-08-dice",
+      "source": "site",
+      "url": "",
+      "date": "2026-08-03",
+      "text": "Completed Phase 1 of DICE 4.0 — the Kem Digital Kreatif at UniSZA — with Pasukan UniMAP. Field references from Muzium Negeri Terengganu and Kampung Budaya Terengganu are now shaping Galeri Warisan Maya.",
+      "image": "assets/img/gwm-istana.jpg"
+    }
+  ]
+}

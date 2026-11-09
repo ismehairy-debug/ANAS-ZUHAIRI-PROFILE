@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Site Editor — Anas Zuhairi</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a1324'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='26' fill='white' text-anchor='middle'%3EAZ%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+  <!-- LOGIN -->
+  <section class="login" id="login">
+    <div class="login__card">
+      <div class="login__brand"><span class="mark">AZ</span><div><strong>Site Editor</strong><small class="mono">edit text · upload photos · publish</small></div></div>
+      <p class="login__lead">Connect to your GitHub repository to edit the website. Changes are saved as a commit and go live in about a minute.</p>
+      <form id="login-form" autocomplete="off">
+        <div class="row3">
+          <label>Owner<input name="owner" required></label>
+          <label>Repository<input name="repo" required></label>
+          <label>Branch<input name="branch" required></label>
+        </div>
+        <label>GitHub access token
+          <input name="token" type="password" placeholder="github_pat_…" required autocomplete="off">
+        </label>
+        <details class="help">
+          <summary>How do I get a token? (one-time, 1 minute)</summary>
+          <ol>
+            <li>Open <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub → Fine-grained token</a>.</li>
+            <li>Name it <em>website editor</em>, choose an expiry date.</li>
+            <li><b>Repository access</b> → <em>Only select repositories</em> → pick this website repository.</li>
+            <li><b>Permissions</b> → Repository → <b>Contents: Read and write</b>. (Optional: <b>Actions: Read and write</b> to run the LinkedIn sync button.)</li>
+            <li>Generate, copy, paste it here.</li>
+          </ol>
+          <p>The token stays in this browser only. Never share it.</p>
+        </details>
+        <label class="check"><input type="checkbox" name="remember" checked> Remember on this device</label>
+        <div class="login__actions">
+          <button class="btn btn--primary" type="submit">Connect & edit</button>
+          <button class="btn btn--ghost" type="button" id="demo-btn">Explore without connecting</button>
+        </div>
+        <p class="login__error" id="login-error" role="alert"></p>
+      </form>
+      <a class="login__back mono" href="index.html">← back to website</a>
+    </div>
+  </section>
+
+  <!-- EDITOR -->
+  <div class="app" id="app" hidden>
+    <header class="topbar">
+      <div class="topbar__left">
+        <span class="mark">AZ</span>
+        <div>
+          <strong>Site Editor</strong>
+          <small class="mono" id="conn-status">—</small>
+        </div>
+      </div>
+      <div class="topbar__right">
+        <span class="dirty mono" id="dirty" hidden>● unsaved changes</span>
+        <a class="btn btn--ghost btn--sm" href="index.html" target="_blank" rel="noopener">View site</a>
+        <button class="btn btn--ghost btn--sm" id="preview-btn">Preview</button>
+        <button class="btn btn--primary btn--sm" id="save-btn">Save & publish</button>
+        <button class="icon-btn" id="logout-btn" title="Sign out" aria-label="Sign out"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10"/></svg></button>
+      </div>
+    </header>
+    <div class="draft-banner" id="draft-banner" hidden>
+      <span>You have unsaved edits from a previous session.</span>
+      <button class="btn btn--sm btn--primary" id="draft-restore">Restore</button>
+      <button class="btn btn--sm btn--ghost" id="draft-discard">Discard</button>
+    </div>
+    <div class="layout">
+      <nav class="sidebar" id="sidebar" aria-label="Sections"></nav>
+      <main class="panel" id="panel"></main>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>
