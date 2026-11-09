@@ -294,7 +294,9 @@
     posts.forEach((p, i) => {
       const isLi = p.source === 'linkedin' || /linkedin\.com/.test(p.url || '');
       const url = safeUrl(p.url);
-      const embed = isLi && !p.text && !p.image ? linkedInEmbedUrl(p.url) : '';
+      // 'embed' = show the LinkedIn post itself; 'card' = own text/photo; 'auto' = embed when there is no text or photo
+      const wantEmbed = isLi && (p.display === 'embed' || (p.display !== 'card' && !p.text && !p.image));
+      const embed = wantEmbed ? linkedInEmbedUrl(p.url) : '';
       const card = h('article', { class: 'post reveal', id: 'post-' + i, style: `--d:${(i % 3) * 0.07}s` });
       if (embed) { card.append(h('iframe', { class: 'post__embed', src: embed, title: 'LinkedIn post', loading: 'lazy', allowfullscreen: true })); box.append(card); return; }
       if (p.image) card.append(h('div', { class: 'post__media' }, h('img', { src: src(p.image), alt: '', loading: 'lazy' })));
@@ -327,7 +329,7 @@
     const box = $('#gallery-list'), embedsBox = $('#gallery-embeds'), empty = $('#gallery-empty');
     box.replaceChildren(); embedsBox.replaceChildren(); empty.replaceChildren();
     const manual = list.filter(g => g.image || g.link).map(g => ({ image: g.image, caption: g.caption, date: g.date, link: safeUrl(g.link), focus: g.focus }));
-    const fromLi = (feed.posts || []).filter(p => (p.source === 'linkedin' || isLiUrl(p.url)) && (p.image || p.url))
+    const fromLi = (feed.posts || []).filter(p => (p.source === 'linkedin' || isLiUrl(p.url)) && p.image) // photos only; link-only posts live in Updates
       .sort((a, b) => (Date.parse(b.date) || 0) - (Date.parse(a.date) || 0))
       .map(p => ({ image: p.image, caption: (p.text || '').replace(/\s+/g, ' ').slice(0, 140), date: fmtDate(p.date), link: safeUrl(p.url) }));
     const items = [...manual, ...fromLi.filter(f => !f.link || !manual.some(m => m.link === f.link))];

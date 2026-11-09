@@ -216,12 +216,14 @@
     },
     {
       id: 'updates', label: 'Updates & LinkedIn', icon: 'linkedin', root: 'feed', path: 'posts', type: 'list', itemName: 'post', composer: true,
-      title: x => `${x.date || ''} · ${(x.text || x.url || 'Post').slice(0, 60)}`,
+      intro: 'The “Latest updates” section of your website. Paste a LinkedIn post link to show that post on your site.',
+      title: x => `${x.date || ''} · ${x.text ? x.text.slice(0, 60) : (x.url ? 'LinkedIn post (shown as on LinkedIn)' : 'Post')}`,
       thumb: x => x.image,
       fields: [
         { key: 'source', label: 'Source', type: 'select', options: [['linkedin', 'LinkedIn post'], ['site', 'Website update']] },
         { key: 'date', label: 'Date', type: 'date' },
-        { key: 'url', label: 'Link (LinkedIn post URL)', type: 'url', wide: true, help: 'With only a LinkedIn URL and no text, the site embeds the original post.' },
+        { key: 'url', label: 'Link (LinkedIn post URL)', type: 'url', wide: true },
+        { key: 'display', label: 'Show on website as', type: 'select', wide: true, options: [['auto', 'Automatic (LinkedIn post if there is no text/photo)'], ['embed', 'The LinkedIn post itself (text, photos, reactions)'], ['card', 'My own text & photo below']] },
         { key: 'text', label: 'Text', type: 'textarea', wide: true, rows: 5 },
         { key: 'image', label: 'Image', type: 'image', wide: true }
       ]
@@ -572,7 +574,7 @@
       el('h1', { text: sec.label }),
       sec.intro ? el('p', { text: sec.intro }) : null));
 
-    if (sec.composer) panel.append(composer(), syncCard());
+    if (sec.composer) panel.append(linkAdder(), composer(), syncCard());
 
     const t = target(sec);
     if (sec.type === 'object') {
@@ -619,6 +621,54 @@
   function linkedInId(url) {
     const m = String(url || '').match(/(?:activity|ugcPost|share)[-:](\d{10,})/);
     return m ? 'li-' + m[1] : '';
+  }
+
+  /** Parse a LinkedIn post link (or LinkedIn's "Embed this post" code) into { id, urn, url }. */
+  function parseLinkedIn(input) {
+    const raw = String(input || '').trim();
+    if (!raw) return { error: '' };
+    if (/lnkd\.in\//i.test(raw)) return { error: 'That is a shortened lnkd.in link. On LinkedIn open the post → ⋯ → “Copy link to post” and paste that full link.' };
+    let m = raw.match(/urn:li:(activity|share|ugcPost):(\d{6,})/i) || raw.match(/(activity|ugcPost|share)[-:](\d{10,})/i);
+    if (!m) return { error: /linkedin\.com/i.test(raw) ? 'This looks like a profile or page link, not a post. Open the post itself → ⋯ → “Copy link to post”.' : 'Paste a LinkedIn post link, e.g. https://www.linkedin.com/posts/… or https://www.linkedin.com/feed/update/urn:li:activity:…' };
+    const type = { activity: 'activity', share: 'share', ugcpost: 'ugcPost' }[m[1].toLowerCase()];
+    const urn = `urn:li:${type}:${m[2]}`;
+    const href = (raw.match(/https:\/\/(?:www\.)?linkedin\.com\/(?:posts|feed\/update)\/[^\s"'<>]+/i) || [])[0];
+    const url = href && !/\/embed\//i.test(href) ? href.split('?')[0] : `https://www.linkedin.com/feed/update/${urn}/`;
+    return { id: 'li-' + m[2], urn, url, embed: `https://www.linkedin.com/embed/feed/update/${urn}` };
+  }
+
+  function linkAdder() {
+    const input = el('input', { type: 'url', inputmode: 'url', autocomplete: 'off', placeholder: 'https://www.linkedin.com/posts/…', 'aria-label': 'LinkedIn post link' });
+    const err = el('p', { class: 'quick__err', role: 'alert' });
+    const frame = el('iframe', { title: 'Preview of the LinkedIn post', loading: 'lazy' });
+    const preview = el('div', { class: 'quick__preview', hidden: true }, el('span', { class: 'mono quick__label', text: 'Preview — this is how it will show on your website' }), frame);
+    const addBtn = el('button', { type: 'button', class: 'btn btn--primary', text: 'Add to website', disabled: true });
+    let parsed = null, t = 0;
+    const check = () => {
+      parsed = parseLinkedIn(input.value);
+      err.textContent = parsed.error || '';
+      const ok = !!(parsed && parsed.urn);
+      addBtn.disabled = !ok;
+      preview.hidden = !ok;
+      if (ok && frame.getAttribute('src') !== parsed.embed) frame.setAttribute('src', parsed.embed);
+    };
+    input.addEventListener('input', () => { clearTimeout(t); t = setTimeout(check, 250); });
+    input.addEventListener('paste', () => setTimeout(check, 30));
+    addBtn.addEventListener('click', async () => {
+      check(); if (!parsed || !parsed.urn) return;
+      S.feed.posts = S.feed.posts || [];
+      if (S.feed.posts.some(p => p.id === parsed.id || p.url === parsed.url)) { toast('This post is already on your website.', 'err'); return; }
+      S.feed.posts.unshift({ id: parsed.id, source: 'linkedin', url: parsed.url, date: today(), text: '', image: '', display: 'embed' });
+      changed();
+      if (!S.demo) await save(); else toast('Added. Connect your token to publish.', 'ok');
+      renderPanel();
+    });
+    return el('section', { class: 'card quick' },
+      el('h2', { text: 'Add a LinkedIn post' }),
+      el('p', { class: 'muted', text: 'Paste the link of your LinkedIn post. Your website will show the post exactly as on LinkedIn — text, photos and all.' }),
+      el('div', { class: 'quick__row' }, input, addBtn),
+      el('small', { class: 'help', text: 'On LinkedIn: open your post → ⋯ (three dots) → “Copy link to post”. LinkedIn’s “Embed this post” code works too. The post must be public.' }),
+      err, preview);
   }
 
   function composer() {
