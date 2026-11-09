@@ -28,6 +28,13 @@ jobs:
         with:
           # Branch tip, so content committed earlier in the same run is included.
           ref: ${{ github.ref }}
+      - name: Version CSS/JS links (cache busting)
+        # Browsers cache assets; a new ?v= value whenever the code changes makes
+        # them fetch the fresh files instead of mixing new HTML with old CSS/JS.
+        run: |
+          ver=$(cat assets/css/*.css assets/js/*.js | sha1sum | cut -c1-10)
+          sed -i "s/__BUILD__/${ver}/g" index.html admin.html
+          grep -o 'v=[a-z0-9]*' index.html | head -1
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
