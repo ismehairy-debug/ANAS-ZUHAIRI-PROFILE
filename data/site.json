@@ -25,26 +25,54 @@
       "Hands-on industrial experience in precision machine assembly, component measurement, preventive maintenance and process optimisation at leading technology manufacturers — Micron Memory and ViTrox.",
       "I enjoy turning messy real-world problems into reliable automated systems: Omron PLC logic, pneumatics and actuators, camera-based vision inspection and data-driven troubleshooting."
     ],
-    "photo": "",
+    "photo": "assets/uploads/2026/img-2008-0zqoq.jpg",
     "location": "Alor Setar, Kedah, Malaysia",
     "email": "anaszuhairiunimap@yahoo.com",
-    "phone": "",
+    "phone": "01111510221",
     "linkedin": "https://www.linkedin.com/in/hairyisme",
     "github": "https://github.com/ismehairy-debug",
-    "resume": "",
+    "resume": "assets/uploads/docs/anas-zuhairi-bin-zullkeffle---resume-1w0sa.pdf",
     "availability": "Open to internships & engineering collaborations",
     "facts": [
-      { "label": "Based in", "value": "Alor Setar, Kedah" },
-      { "label": "Studying", "value": "B.Eng.Tech (Robotics & Automation), UniMAP" },
-      { "label": "Focus", "value": "PLC · Vision · Precision assembly" },
-      { "label": "Languages", "value": "Malay · English · Japanese (technical)" }
+      {
+        "label": "Based in",
+        "value": "Alor Setar, Kedah"
+      },
+      {
+        "label": "Studying",
+        "value": "B.Eng.Tech (Robotics & Automation), UniMAP"
+      },
+      {
+        "label": "Focus",
+        "value": "PLC · Vision · Precision assembly"
+      },
+      {
+        "label": "Languages",
+        "value": "Malay · English · Japanese (technical)"
+      }
     ]
   },
   "stats": [
-    { "value": 21, "suffix": "", "label": "High-precision production machines maintained at Micron" },
-    { "value": 30, "suffix": "", "label": "Line operators directed on high-volume shifts" },
-    { "value": 560, "suffix": "", "label": "Attendees managed as NCIS 2026 Project Manager" },
-    { "value": 17, "suffix": "", "label": "Executive committee members led at MYSTEM" }
+    {
+      "value": 21,
+      "suffix": "",
+      "label": "High-precision production machines maintained at Micron"
+    },
+    {
+      "value": 30,
+      "suffix": "",
+      "label": "Line operators directed on high-volume shifts"
+    },
+    {
+      "value": 560,
+      "suffix": "",
+      "label": "Attendees managed as NCIS 2026 Project Manager"
+    },
+    {
+      "value": 17,
+      "suffix": "",
+      "label": "Executive committee members led at MYSTEM"
+    }
   ],
   "experience": [
     {
@@ -58,7 +86,12 @@
         "Implemented machine conversion and set-up protocols to adapt equipment quickly to strict customer specification changes.",
         "Directed 30 line operators and supported 10 shift technicians to keep machinery at peak precision and throughput."
       ],
-      "tags": ["Semiconductor", "Preventive Maintenance", "Process Data", "Team Lead"]
+      "tags": [
+        "Semiconductor",
+        "Preventive Maintenance",
+        "Process Data",
+        "Team Lead"
+      ]
     },
     {
       "role": "Technical Intern",
@@ -70,7 +103,12 @@
         "Verified mechanical tolerances and surface compliance against engineering specifications before customer shipment.",
         "Mentored incoming interns on standardised precision assembly and quality-assurance procedures."
       ],
-      "tags": ["Vision Inspection", "Metrology", "Precision Assembly", "QA"]
+      "tags": [
+        "Vision Inspection",
+        "Metrology",
+        "Precision Assembly",
+        "QA"
+      ]
     },
     {
       "role": "Freelance Logistics Partner",
@@ -80,7 +118,10 @@
       "bullets": [
         "Independent route planning and time allocation in a high-volume, self-regulated environment while maintaining consistent performance standards."
       ],
-      "tags": ["Self-management", "Planning"]
+      "tags": [
+        "Self-management",
+        "Planning"
+      ]
     }
   ],
   "projects": [
@@ -100,7 +141,13 @@
         "Built from affordable industrial components and a 3D-printed frame.",
         "Proposed to SWCorp Perlis as a real-world case study · supports SDG 11 & 12."
       ],
-      "tags": ["Omron PLC", "Ladder Logic", "Inductive / Capacitive Sensors", "Solenoid Actuators", "3D Printing"],
+      "tags": [
+        "Omron PLC",
+        "Ladder Logic",
+        "Inductive / Capacitive Sensors",
+        "Solenoid Actuators",
+        "3D Printing"
+      ],
       "team": "With Muhammad Alynajmi bin Mohd Khairruddin · Supervisor: Dr. Syatirah binti Mohd Noor",
       "links": []
     },
@@ -120,11 +167,23 @@
         "Room-scale locomotion, proximity-triggered exhibits and spatial-audio falloff.",
         "Built with Three.js and the WebXR Device API, hosted on GitHub Pages."
       ],
-      "tags": ["WebXR", "Three.js", "VR · Meta Quest 2", "Spatial Audio", "Cultural Heritage"],
+      "tags": [
+        "WebXR",
+        "Three.js",
+        "VR · Meta Quest 2",
+        "Spatial Audio",
+        "Cultural Heritage"
+      ],
       "team": "With Muhammad Afifi bin Muhd Shukri, Baraah Ali Omar Balagem & Ahmad Haziq bin Ariff · Mentor: Dr. Mohd Hafiz Ismail",
       "links": [
-        { "label": "Live demo", "url": "https://ismehairy-debug.github.io/galeri-warisan-maya/" },
-        { "label": "Source code", "url": "https://github.com/ismehairy-debug/galeri-warisan-maya" }
+        {
+          "label": "Live demo",
+          "url": "https://ismehairy-debug.github.io/galeri-warisan-maya/"
+        },
+        {
+          "label": "Source code",
+          "url": "https://github.com/ismehairy-debug/galeri-warisan-maya"
+        }
       ]
     },
     {
@@ -142,7 +201,12 @@
         "Real-time vision output integrated with Omron PLC control for fast, precise actuation.",
         "Iterative parameter tuning to raise throughput and operational safety."
       ],
-      "tags": ["Computer Vision", "AI", "Omron PLC", "Experimental Design"],
+      "tags": [
+        "Computer Vision",
+        "AI",
+        "Omron PLC",
+        "Experimental Design"
+      ],
       "team": "",
       "links": []
     },
@@ -160,7 +224,12 @@
         "Designed and deployed with pgAdmin and XAMPP.",
         "Presented to industry representatives at the Electrical Mechatronic Design Innovation Expo (EMDIEX 2026)."
       ],
-      "tags": ["PostgreSQL · pgAdmin", "XAMPP", "FIFO Logic", "HTML"],
+      "tags": [
+        "PostgreSQL · pgAdmin",
+        "XAMPP",
+        "FIFO Logic",
+        "HTML"
+      ],
       "team": "",
       "links": []
     }
@@ -169,22 +238,46 @@
     {
       "group": "Precision Engineering & Manufacturing",
       "icon": "gear",
-      "items": ["Precision Component Assembly", "Metrology & Dimensional Measurement", "Tooling & Machine Maintenance", "Process Data Analysis", "Machine Conversion Protocols", "Quality Control"]
+      "items": [
+        "Precision Component Assembly",
+        "Metrology & Dimensional Measurement",
+        "Tooling & Machine Maintenance",
+        "Process Data Analysis",
+        "Machine Conversion Protocols",
+        "Quality Control"
+      ]
     },
     {
       "group": "Automation, Control & Vision",
       "icon": "chip",
-      "items": ["Camera-Based AI Vision Inspection", "PLC Programming (Omron)", "Pneumatic & Actuator Systems", "Robot Axis Teaching", "Automated Guided Systems"]
+      "items": [
+        "Camera-Based AI Vision Inspection",
+        "PLC Programming (Omron)",
+        "Pneumatic & Actuator Systems",
+        "Robot Axis Teaching",
+        "Automated Guided Systems"
+      ]
     },
     {
       "group": "Design & Software Tools",
       "icon": "code",
-      "items": ["FreeCAD (3D CAD)", "MATLAB", "pgAdmin / PostgreSQL", "Arduino Microcontrollers", "HTML · XAMPP", "Three.js · WebXR"]
+      "items": [
+        "FreeCAD (3D CAD)",
+        "MATLAB",
+        "pgAdmin / PostgreSQL",
+        "Arduino Microcontrollers",
+        "HTML · XAMPP",
+        "Three.js · WebXR"
+      ]
     },
     {
       "group": "Languages",
       "icon": "globe",
-      "items": ["Malay — Native", "English — Professional", "Japanese — Technical exposure (JMTI)"]
+      "items": [
+        "Malay — Native",
+        "English — Professional",
+        "Japanese — Technical exposure (JMTI)"
+      ]
     }
   ],
   "education": [
@@ -249,11 +342,35 @@
     }
   ],
   "gallery": [
-    { "image": "assets/img/gwm-performance.jpg", "caption": "Galeri Warisan Maya — performing-arts pavilion concept", "date": "2026" },
-    { "image": "assets/img/gwm-river-village.jpg", "caption": "Galeri Warisan Maya — riverside heritage village environment", "date": "2026" },
-    { "image": "assets/img/gwm-heritage-hall.jpg", "caption": "Galeri Warisan Maya — customs & music hall", "date": "2026" },
-    { "image": "assets/img/gwm-craftsmen.jpg", "caption": "Galeri Warisan Maya — crafts & weaponry workshop", "date": "2026" },
-    { "image": "assets/img/gwm-istana.jpg", "caption": "Architecture reference — Malay palace", "date": "2026" },
-    { "image": "assets/img/gwm-market.jpg", "caption": "Galeri Warisan Maya — heritage food & market scene", "date": "2026" }
+    {
+      "image": "assets/img/gwm-performance.jpg",
+      "caption": "Galeri Warisan Maya — performing-arts pavilion concept",
+      "date": "2026"
+    },
+    {
+      "image": "assets/img/gwm-river-village.jpg",
+      "caption": "Galeri Warisan Maya — riverside heritage village environment",
+      "date": "2026"
+    },
+    {
+      "image": "assets/img/gwm-heritage-hall.jpg",
+      "caption": "Galeri Warisan Maya — customs & music hall",
+      "date": "2026"
+    },
+    {
+      "image": "assets/img/gwm-craftsmen.jpg",
+      "caption": "Galeri Warisan Maya — crafts & weaponry workshop",
+      "date": "2026"
+    },
+    {
+      "image": "assets/img/gwm-istana.jpg",
+      "caption": "Architecture reference — Malay palace",
+      "date": "2026"
+    },
+    {
+      "image": "assets/img/gwm-market.jpg",
+      "caption": "Galeri Warisan Maya — heritage food & market scene",
+      "date": "2026"
+    }
   ]
 }
