@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin.html
 
-Sitemap: https://ismehairy-debug.github.io/ANAS-ZUHAIRI-PROFILE/sitemap.xml
+Sitemap: https://anaszuhairi.com/sitemap.xml
