@@ -204,10 +204,15 @@
     },
     {
       id: 'gallery', label: 'Gallery', icon: 'image', root: 'site', path: 'gallery', type: 'list', itemName: 'photo', bulk: true,
-      intro: 'Add pictures to the gallery. You can select many photos at once — they are resized automatically.',
-      title: x => x.caption || 'Photo',
+      intro: 'Photos from your LinkedIn posts. Add the post’s photo and paste its link (LinkedIn → ⋯ on the post → Copy link to post): tapping the photo on the site opens the post. Paste only a link (no photo) to embed the whole post. LinkedIn posts you add under “Updates & LinkedIn” with a photo appear here automatically.',
+      title: x => x.caption || x.link || 'Photo',
       thumb: x => x.image,
-      fields: [{ key: 'image', label: 'Photo', type: 'image', wide: true, focal: 'focus', frames: [['Gallery tile', 1], ['Wide tile', 2]] }, { key: 'caption', label: 'Caption', wide: true }, { key: 'date', label: 'Date / year' }]
+      fields: [
+        { key: 'link', label: 'LinkedIn post link', type: 'url', wide: true, help: 'e.g. https://www.linkedin.com/posts/… or https://www.linkedin.com/feed/update/urn:li:activity:…' },
+        { key: 'image', label: 'Photo (optional — without a photo the post is embedded)', type: 'image', wide: true, focal: 'focus', frames: [['Gallery tile', 1], ['Wide tile', 2]] },
+        { key: 'caption', label: 'Caption', wide: true },
+        { key: 'date', label: 'Date / year' }
+      ]
     },
     {
       id: 'updates', label: 'Updates & LinkedIn', icon: 'linkedin', root: 'feed', path: 'posts', type: 'list', itemName: 'post', composer: true,

@@ -401,36 +401,5 @@
       "description": "Represented UniMAP at Ningbo Polytechnic University, Zhejiang (18 – 24 Oct 2026)."
     }
   ],
-  "gallery": [
-    {
-      "image": "assets/img/gwm-performance.jpg",
-      "caption": "Galeri Warisan Maya — performing-arts pavilion concept",
-      "date": "2026"
-    },
-    {
-      "image": "assets/img/gwm-river-village.jpg",
-      "caption": "Galeri Warisan Maya — riverside heritage village environment",
-      "date": "2026"
-    },
-    {
-      "image": "assets/img/gwm-heritage-hall.jpg",
-      "caption": "Galeri Warisan Maya — customs & music hall",
-      "date": "2026"
-    },
-    {
-      "image": "assets/img/gwm-craftsmen.jpg",
-      "caption": "Galeri Warisan Maya — crafts & weaponry workshop",
-      "date": "2026"
-    },
-    {
-      "image": "assets/img/gwm-istana.jpg",
-      "caption": "Architecture reference — Malay palace",
-      "date": "2026"
-    },
-    {
-      "image": "assets/img/gwm-market.jpg",
-      "caption": "Galeri Warisan Maya — heritage food & market scene",
-      "date": "2026"
-    }
-  ]
+  "gallery": []
 }

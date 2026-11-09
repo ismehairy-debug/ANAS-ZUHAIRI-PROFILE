@@ -314,21 +314,52 @@
     });
   }
 
+  /**
+   * Gallery = photos from LinkedIn posts.
+   * Sources: (1) site.gallery items (photo and/or LinkedIn post link) added in the editor,
+   *          (2) LinkedIn posts in data/linkedin.json (from the sync or the editor composer).
+   * Photo → tile that opens the lightbox with a "View post on LinkedIn" button.
+   * Link without photo → the LinkedIn post is embedded.
+   */
   let galleryItems = [];
-  function renderGallery(list = []) {
-    const box = $('#gallery-list'); box.replaceChildren();
-    galleryItems = list.filter(g => g.image);
-    if (!galleryItems.length) { $('#gallery').hidden = true; return; }
+  const isLiUrl = u => /linkedin\.com/i.test(u || '');
+  function renderGallery(list = [], feed = {}, profile = {}) {
+    const box = $('#gallery-list'), embedsBox = $('#gallery-embeds'), empty = $('#gallery-empty');
+    box.replaceChildren(); embedsBox.replaceChildren(); empty.replaceChildren();
+    const manual = list.filter(g => g.image || g.link).map(g => ({ image: g.image, caption: g.caption, date: g.date, link: safeUrl(g.link), focus: g.focus }));
+    const fromLi = (feed.posts || []).filter(p => (p.source === 'linkedin' || isLiUrl(p.url)) && (p.image || p.url))
+      .sort((a, b) => (Date.parse(b.date) || 0) - (Date.parse(a.date) || 0))
+      .map(p => ({ image: p.image, caption: (p.text || '').replace(/\s+/g, ' ').slice(0, 140), date: fmtDate(p.date), link: safeUrl(p.url) }));
+    const items = [...manual, ...fromLi.filter(f => !f.link || !manual.some(m => m.link === f.link))];
+    galleryItems = items.filter(g => g.image);
+    const embeds = items.filter(g => !g.image && linkedInEmbedUrl(g.link));
     galleryItems.forEach((g, i) => {
       const img = h('img', { src: src(g.image), alt: g.caption || '', loading: 'lazy', decoding: 'async' });
       applyFocus(img, g.focus);
-      box.append(h('button', { class: 'shot reveal', type: 'button', style: `--d:${(i % 4) * 0.05}s`, 'aria-label': 'Open image: ' + (g.caption || 'photo'), onclick: () => openLightbox(i) },
-        img, g.caption ? h('figcaption', { text: g.caption }) : null));
+      box.append(h('button', { class: 'shot reveal', type: 'button', style: `--d:${(i % 4) * 0.05}s`, 'aria-label': (isLiUrl(g.link) ? 'Open LinkedIn post photo: ' : 'Open image: ') + (g.caption || 'photo'), onclick: () => openLightbox(i) },
+        img,
+        isLiUrl(g.link) ? h('span', { class: 'shot__li', 'aria-hidden': 'true' }, icon(['F:M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4v11H3zM9.5 9.75h3.8v1.5h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1v5.45h-4v-4.83c0-1.15-.02-2.63-1.6-2.63-1.6 0-1.85 1.25-1.85 2.55v4.91h-4z'])) : null,
+        g.caption ? h('figcaption', { text: g.caption }) : null));
     });
+    embeds.forEach((g, i) => embedsBox.append(h('div', { class: 'gallery-embed reveal', style: `--d:${(i % 3) * 0.06}s` },
+      h('iframe', { src: linkedInEmbedUrl(g.link), title: 'LinkedIn post' + (g.caption ? ': ' + g.caption.slice(0, 60) : ''), loading: 'lazy', allowfullscreen: true }))));
+    box.hidden = !galleryItems.length; embedsBox.hidden = !embeds.length;
+    if (!galleryItems.length && !embeds.length) {
+      empty.hidden = false;
+      const li = safeUrl(profile.linkedin);
+      empty.append(h('p', { text: 'Photos from my LinkedIn posts will appear here.' }),
+        li ? h('a', { class: 'btn btn--primary', href: li, target: '_blank', rel: 'noopener' }, h('span', { text: 'See my posts on LinkedIn' }), icon(ICONS.arrow)) : null);
+      return;
+    }
+    empty.hidden = true;
     const fit = () => {
       const shots = $$('.shot', box); if (!shots.length) return;
       const cols = getComputedStyle(box).gridTemplateColumns.split(' ').length;
-      shots.forEach(s => (s.style.gridColumn = ''));
+      shots.forEach(s => { s.style.gridColumn = ''; s.style.gridRow = ''; });
+      if (shots.length <= 2) { // one or two photos: show them as equal, large tiles
+        shots.forEach(s => { s.style.gridColumn = `span ${Math.min(2, cols)}`; s.style.gridRow = 'span 2'; });
+        return;
+      }
       const cells = (shots.length > 1 ? 4 : 1) + Math.max(0, shots.length - 1);
       const rem = cells % cols;
       if (rem && shots.length > 1) shots[shots.length - 1].style.gridColumn = `span ${cols - rem + 1}`;
@@ -527,6 +558,9 @@
     const g = galleryItems[lbIndex];
     $('img', lb).src = src(g.image); $('img', lb).alt = g.caption || '';
     $('figcaption', lb).textContent = [g.caption, g.date].filter(Boolean).join(' · ');
+    const a = $('.lightbox__link', lb);
+    if (g.link) { a.href = g.link; a.hidden = false; a.querySelector('span').textContent = isLiUrl(g.link) ? 'View post on LinkedIn' : 'Open link'; }
+    else a.hidden = true;
   }
   function openLightbox(i) { lastFocus = document.activeElement; showLb(i); lb.hidden = false; requestAnimationFrame(() => lb.classList.add('is-open')); $('.lightbox__close', lb).focus(); document.body.style.overflow = 'hidden'; }
   function closeLightbox() { lb.classList.remove('is-open'); setTimeout(() => { lb.hidden = true; }, 200); document.body.style.overflow = ''; lastFocus && lastFocus.focus(); }
@@ -629,7 +663,7 @@
     renderEducation(site.education);
     renderLeadership(site.leadership);
     renderUpdates(feed);
-    renderGallery(site.gallery);
+    renderGallery(site.gallery, feed, p);
     renderContact(p);
     updateStructuredData(site);
     siteRef = site;

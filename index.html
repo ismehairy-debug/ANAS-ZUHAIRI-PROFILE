@@ -222,9 +222,11 @@
         <header class="head reveal">
           <span class="head__idx mono">07</span>
           <h2 class="head__title" id="gal-title">Gallery</h2>
-          <p class="head__kicker">Prototypes, events and work in progress.</p>
+          <p class="head__kicker">Moments from my LinkedIn. Tap a photo to open the post.</p>
         </header>
         <div class="gallery" id="gallery-list"></div>
+        <div class="gallery-embeds" id="gallery-embeds"></div>
+        <div class="gallery-empty reveal" id="gallery-empty" hidden></div>
       </div>
     </section>
 
@@ -280,7 +282,7 @@
   <div class="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
     <button class="lb-btn lightbox__close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
     <button class="lb-btn lightbox__prev" type="button" aria-label="Previous image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
-    <figure><img alt=""><figcaption class="mono"></figcaption></figure>
+    <figure><img alt=""><figcaption class="mono"></figcaption><a class="btn btn--primary btn--sm lightbox__link" target="_blank" rel="noopener" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path class="fill" d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4v11H3zM9.5 9.75h3.8v1.5h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1v5.45h-4v-4.83c0-1.15-.02-2.63-1.6-2.63-1.6 0-1.85 1.25-1.85 2.55v4.91h-4z"/></svg><span>View post on LinkedIn</span></a></figure>
     <button class="lb-btn lightbox__next" type="button" aria-label="Next image"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
   </div>
 
