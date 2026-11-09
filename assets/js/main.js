@@ -1,9 +1,8 @@
 /* =========================================================
-   Anas Zuhairi — Portfolio runtime (v2)
+   Anas Zuhairi — Portfolio runtime (v3, recruiter-focused)
    Loads data/site.json + data/linkedin.json and renders the page.
    All user/feed text is inserted with textContent (never innerHTML).
-   Motion: entrance reveals that settle, pointer-driven effects,
-   no decorative infinite loops; everything honours reduced motion.
+   Motion settles after entry; pointer effects only; reduced motion honoured.
    ========================================================= */
 (function () {
   'use strict';
@@ -15,7 +14,6 @@
   const PREVIEW = new URLSearchParams(location.search).has('preview');
   const svgNS = 'http://www.w3.org/2000/svg';
 
-  /* ---------- DOM helpers ---------- */
   function h(tag, attrs, ...kids) {
     const el = document.createElement(tag);
     if (attrs) for (const [k, v] of Object.entries(attrs)) {
@@ -44,10 +42,28 @@
     chip: ['M9 3v2M15 3v2M9 19v2M15 19v2M3 9h2M3 15h2M19 9h2M19 15h2', 'M7 5h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z', 'M9 9h6v6H9z'],
     code: ['M16 18l6-6-6-6', 'M8 6l-6 6 6 6'],
     globe: ['M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z', 'M3 12h18', 'M12 3a14 14 0 0 1 0 18a14 14 0 0 1 0-18z'],
-    linkedin: ['F:M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4v11H3zM9.5 9.75h3.8v1.5h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1v5.45h-4v-4.83c0-1.15-.02-2.63-1.6-2.63-1.6 0-1.85 1.25-1.85 2.55v4.91h-4z'],
     arrow: ['M7 17L17 7M9 7h8v8'],
+    download: ['M12 3v12M7 10l5 5 5-5M5 21h14'],
     play: ['F:M8 5.5v13l11-6.5z'],
-    pause: ['F:M7 5h4v14H7zM13 5h4v14h-4z']
+    pause: ['F:M7 5h4v14H7zM13 5h4v14h-4z'],
+    mail: ['M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z', 'M3 7l9 6 9-6'],
+    phone: ['M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z'],
+    pin: ['M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z', 'M12 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z'],
+    doc: ['M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z', 'M14 3v5h5M9 13h6M9 17h6']
+  };
+  // Social platforms: icon + display name. Keys match the editor's "platform" options.
+  const SOCIAL = {
+    linkedin: { name: 'LinkedIn', icon: ['M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z', 'M2 9h4v12H2z', 'M4 2a2 2 0 1 1 0 4 2 2 0 0 1 0-4z'] },
+    whatsapp: { name: 'WhatsApp', icon: ['M7.9 20A9 9 0 1 0 4 16.1L2 22z', 'M9 9.2c.2 2.6 2.2 4.6 4.8 4.8l1-1.2-1.6-.9-.8.6a4 4 0 0 1-1.9-1.9l.6-.8-.9-1.6z'] },
+    telegram: { name: 'Telegram', icon: ['M22 2L11 13', 'M22 2l-7 20-4-9-9-4z'] },
+    instagram: { name: 'Instagram', icon: ['M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5z', 'M16 11.4A4 4 0 1 1 12.6 8 4 4 0 0 1 16 11.4z', 'M17.5 6.5h.01'] },
+    facebook: { name: 'Facebook', icon: ['M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z'] },
+    github: { name: 'GitHub', icon: ['M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.1-1.3-.3-2.5-1-3.5.3-1.2.3-2.4 0-3.5 0 0-1 0-3 1.5a10.3 10.3 0 0 0-8 0C6 2 5 2 5 2c-.3 1.1-.3 2.3 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.4.5-.7 1-.9 1.7-.2.6-.2 1.2-.1 1.8v4', 'M9 18c-4.5 2-5-2-7-2'] },
+    x: { name: 'X', icon: ['M4 4l16 16', 'M20 4L4 20'] },
+    youtube: { name: 'YouTube', icon: ['M2.5 17a24 24 0 0 1 0-10 2 2 0 0 1 1.4-1.4 49.6 49.6 0 0 1 16.2 0A2 2 0 0 1 21.5 7a24 24 0 0 1 0 10 2 2 0 0 1-1.4 1.4 49.6 49.6 0 0 1-16.2 0A2 2 0 0 1 2.5 17', 'M10 15l5-3-5-3z'] },
+    tiktok: { name: 'TikTok', icon: ['M9 18V5l12-2v13', 'M6 15a3 3 0 1 0 0 6 3 3 0 0 0 0-6z', 'M18 13a3 3 0 1 0 0 6 3 3 0 0 0 0-6z'] },
+    website: { name: 'Website', icon: ICONS.globe },
+    email: { name: 'Email', icon: ICONS.mail }
   };
 
   /* ---------- data ---------- */
@@ -62,7 +78,7 @@
       try {
         const draft = JSON.parse(localStorage.getItem('az-preview') || 'null');
         if (draft && draft.site) { previewImages = draft.images || {}; return { site: draft.site, feed: draft.feed || { posts: [] } }; }
-      } catch (e) { /* fall back to published data */ }
+      } catch (e) { /* fall back */ }
     }
     const [site, feed] = await Promise.all([getJSON('data/site.json'), getJSON('data/linkedin.json').catch(() => ({ posts: [] }))]);
     return { site, feed };
@@ -73,56 +89,81 @@
     if (!u) return '';
     try { const x = new URL(u, location.href); return ['http:', 'https:', 'mailto:', 'tel:'].includes(x.protocol) ? x.href : ''; } catch { return ''; }
   };
+  const isExternal = u => /^https?:/i.test(u) && !u.startsWith(location.origin);
+  /** Apply an editor focus/zoom value ({x, y, zoom}) to an <img> as CSS variables. */
+  function applyFocus(img, f) {
+    if (!img || !f) return;
+    const x = Number(f.x), y = Number(f.y), z = Number(f.zoom);
+    if (isFinite(x)) img.style.setProperty('--fx', Math.min(100, Math.max(0, x)) + '%');
+    if (isFinite(y)) img.style.setProperty('--fy', Math.min(100, Math.max(0, y)) + '%');
+    if (isFinite(z) && z > 0) img.style.setProperty('--z', Math.min(4, Math.max(1, z)));
+  }
+  const socialsOf = p => (p.socials || []).filter(s => safeUrl(s.url));
 
   /* ---------- renderers ---------- */
   function bindSimple(site) {
-    const p = site.profile || {};
-    const words = String(p.shortName || p.name || '').trim().split(/\s+/);
-    p.firstLine = words.length > 1 ? words.slice(0, -1).join(' ') : words[0] || '';
-    p.secondLine = words.length > 1 ? words[words.length - 1] : '';
-    $$('[data-bind]').forEach(el => {
-      const v = get(site, el.dataset.bind);
-      if (typeof v === 'string' && v) el.textContent = v;
-      else if (el.dataset.bind === 'profile.secondLine') el.closest('.line').hidden = true;
-    });
+    $$('[data-bind]').forEach(el => { const v = get(site, el.dataset.bind); if (typeof v === 'string' && v) el.textContent = v; });
     $$('[data-href]').forEach(el => { const v = safeUrl(get(site, el.dataset.href)); if (v) el.href = v; else el.hidden = true; });
-    const m = site.meta || {};
+    const m = site.meta || {}, p = site.profile || {};
     if (m.title) document.title = m.title;
     if (m.description) { const d = $('meta[name="description"]'); d && d.setAttribute('content', m.description); }
     $('#year').textContent = new Date().getFullYear();
-    const cv = $('#nav-cv');
-    if (p.resume) {
-      cv.href = src(p.resume); cv.target = '_blank'; cv.rel = 'noopener';
-    } else {
-      cv.querySelector('span').textContent = 'Contact';
-    }
+    ['#nav-cv', '#hero-cv'].forEach(sel => {
+      const a = $(sel);
+      if (p.resume) { a.href = src(p.resume); a.target = '_blank'; a.rel = 'noopener'; }
+      else { a.querySelector('span').textContent = 'Contact me'; a.href = '#contact'; }
+    });
   }
 
-  function renderHero(p) {
+  function renderSocials(list, box, small) {
+    box.replaceChildren();
+    list.forEach(s => {
+      const meta = SOCIAL[s.platform] || SOCIAL.website;
+      const u = safeUrl(s.url);
+      const label = `${meta.name}${s.label ? ': ' + s.label : ''}`;
+      box.append(h('li', null, h('a', { href: u, target: isExternal(u) ? '_blank' : null, rel: isExternal(u) ? 'noopener me' : null, 'aria-label': label, title: label }, icon(meta.icon))));
+    });
+    if (!list.length) box.hidden = true;
+  }
+
+  function renderHero(site) {
+    const p = site.profile || {};
     const cell = $('#photo-cell'), img = $('.photo', cell);
     if (p.photo) {
       img.src = src(p.photo); img.alt = `Photo of ${p.shortName || p.name || ''}`; img.hidden = false;
+      applyFocus(img, p.photoFocus);
       cell.classList.add('has-photo');
     }
-    if (p.photoCaption) { $('.photo__cap', cell).textContent = p.photoCaption; cell.classList.add('has-caption'); }
-    const roles = $('#roles'); roles.replaceChildren();
-    (p.roles || []).forEach(r => roles.append(h('li', { text: r })));
+    $('.photo__cap', cell).textContent = p.photoCaption || '';
+    const fb = $('#factbar'); fb.replaceChildren();
+    (p.facts || []).slice(0, 4).forEach(x => fb.append(h('div', null, h('dt', { text: x.label }), h('dd', { text: x.value }))));
+    if (!fb.children.length) fb.hidden = true;
+    renderSocials(socialsOf(p), $('#hero-socials'));
+    renderSocials(socialsOf(p), $('#footer-socials'), true);
+    const orgs = $('#proof-orgs'); orgs.replaceChildren();
+    (p.proofOrgs || []).forEach(o => orgs.append(h('li', { text: o })));
+    if (!orgs.children.length) orgs.parentElement.hidden = true;
   }
 
   function renderStats(stats = []) {
     const box = $('#stats'); box.replaceChildren();
     stats.forEach((s, i) => box.append(
-      h('div', { class: 'cell stat reveal', style: `--d:${0.35 + i * 0.07}s` },
+      h('div', { class: 'stat reveal', style: `--d:${i * 0.07}s` },
         h('div', { class: 'stat__value', 'data-count': s.value, 'data-suffix': s.suffix || '', text: '0' + (s.suffix || '') }),
         h('div', { class: 'stat__label', text: s.label }))));
     if (!stats.length) box.hidden = true;
   }
 
-  function renderAbout(p) {
+  function renderAbout(site) {
+    const p = site.profile || {};
     const t = $('#about-text'); t.replaceChildren();
     (Array.isArray(p.summary) ? p.summary : String(p.summary || '').split(/\n\s*\n/)).filter(Boolean).forEach(par => t.append(h('p', { text: par })));
-    const f = $('#about-facts'); f.replaceChildren();
-    (p.facts || []).forEach(x => f.append(h('div', { class: 'fact' }, h('dt', { text: x.label }), h('dd', { text: x.value }))));
+    const roles = $('#roles'); roles.replaceChildren();
+    (p.roles || []).forEach(r => roles.append(h('li', { text: r })));
+    const langGroup = (site.skills || []).find(g => g.icon === 'globe' || /language/i.test(g.group || ''));
+    const langs = $('#langs'); langs.replaceChildren();
+    (langGroup ? langGroup.items : []).forEach(l => langs.append(h('li', { text: l })));
+    if (!langs.children.length) { langs.hidden = true; langs.previousElementSibling.hidden = true; }
   }
 
   function renderExperience(list = []) {
@@ -143,25 +184,22 @@
   function projectCard(p, i, total, compact) {
     const visual = p.visual || (p.image ? 'image' : 'none');
     let media = null;
-    if (visual === 'image' && p.image) {
-      media = h('div', { class: 'project__media' }, h('img', { src: src(p.image), alt: `${p.title} — preview`, loading: 'lazy', decoding: 'async' }));
-    } else if (['aurewas', 'vision', 'database'].includes(visual) && window.ProjectVisuals) {
+    if ((visual === 'image' || !window.ProjectVisuals) && p.image) {
+      const img = h('img', { src: src(p.image), alt: `${p.title} — preview`, loading: 'lazy', decoding: 'async' });
+      applyFocus(img, p.imageFocus);
+      media = h('div', { class: 'project__media' }, img);
+    } else if (['aurewas', 'vision', 'database'].includes(visual)) {
       const canvas = h('canvas', { class: 'sim', role: 'img', 'aria-label': `${p.title}: animated diagram of how the system works` });
-      const ctrl = h('button', { class: 'sim-ctrl', type: 'button', 'aria-pressed': 'false' });
-      media = h('div', { class: 'project__media' }, canvas, ctrl,
-        visual === 'aurewas' ? h('span', { class: 'sim-label', text: 'Live PLC logic · top-down' }) : null);
+      const ctrl = h('button', { class: 'sim-ctrl', type: 'button' });
+      media = h('div', { class: 'project__media' }, canvas, ctrl, visual === 'aurewas' ? h('span', { class: 'sim-label', text: 'Live PLC logic · top-down' }) : null);
       sims.push({ canvas, ctrl, visual });
-    } else if (p.image) {
-      media = h('div', { class: 'project__media' }, h('img', { src: src(p.image), alt: `${p.title} — preview`, loading: 'lazy' }));
     }
     if (media && p.status) media.append(h('span', { class: 'badge' + (/progress/i.test(p.status) ? ' badge--progress' : ''), text: p.status }));
-
     const links = (p.links || []).filter(l => safeUrl(l.url)).map((l, k) =>
-      h('a', { class: 'btn btn--sm ' + (k === 0 ? 'btn--accent' : 'btn--line'), href: safeUrl(l.url), target: '_blank', rel: 'noopener' },
+      h('a', { class: 'btn btn--sm ' + (k === 0 ? 'btn--primary' : 'btn--line'), href: safeUrl(l.url), target: '_blank', rel: 'noopener' },
         h('span', { text: l.label || 'Open' }), icon(ICONS.arrow)));
-
     const body = h('div', { class: 'project__body' },
-      h('div', { class: 'project__num' }, h('span', { text: `P/${String(i + 1).padStart(2, '0')}` }), h('span', { text: `${String(i + 1).padStart(2, '0')} — ${String(total).padStart(2, '0')}` })),
+      h('div', { class: 'project__num', text: `Project ${String(i + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}` }),
       p.context ? h('p', { class: 'project__context', text: p.context }) : null,
       h('h3', { class: 'project__title', text: p.title }),
       p.subtitle ? h('p', { class: 'project__subtitle', text: p.subtitle }) : null,
@@ -181,12 +219,12 @@
     let n = 0;
     featured.forEach(p => box.append(projectCard(p, n++, list.length, false)));
     for (let i = 0; i < rest.length; i += 2) box.append(h('div', { class: 'projects__row' }, rest.slice(i, i + 2).map(p => projectCard(p, n++, list.length, true))));
+    if (!window.ProjectVisuals) return;
     sims.forEach(({ canvas, ctrl, visual }) => {
       const sim = window.ProjectVisuals.mount(canvas, visual, { autoplay: !reduceMotion });
       const sync = () => {
         const on = sim.isPlaying();
         ctrl.replaceChildren(icon(on ? ICONS.pause : ICONS.play), on ? 'Pause' : 'Play');
-        ctrl.setAttribute('aria-pressed', String(!on));
         ctrl.setAttribute('aria-label', (on ? 'Pause' : 'Play') + ' animation');
       };
       ctrl.addEventListener('click', () => { sim.isPlaying() ? sim.pause() : sim.play(); sync(); });
@@ -255,7 +293,7 @@
       }
       card.append(h('div', { class: 'post__body' },
         h('div', { class: 'post__meta' },
-          h('span', { class: 'post__src' + (isLi ? ' post__src--li' : '') }, isLi ? icon(ICONS.linkedin) : null, isLi ? 'LinkedIn' : 'Update'),
+          h('span', { class: 'post__src' + (isLi ? ' post__src--li' : '') }, isLi ? icon(['F:M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4v11H3zM9.5 9.75h3.8v1.5h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1v5.45h-4v-4.83c0-1.15-.02-2.63-1.6-2.63-1.6 0-1.85 1.25-1.85 2.55v4.91h-4z']) : null, isLi ? 'LinkedIn' : 'Update'),
           h('time', { datetime: p.date || '', text: fmtDate(p.date) })),
         p.text ? h('p', { class: 'post__text', text: p.text }) : null,
         url ? h('a', { class: 'post__link', href: url, target: '_blank', rel: 'noopener' }, isLi ? 'Read on LinkedIn' : 'Read more', icon(ICONS.arrow)) : null));
@@ -268,11 +306,12 @@
     const box = $('#gallery-list'); box.replaceChildren();
     galleryItems = list.filter(g => g.image);
     if (!galleryItems.length) { $('#gallery').hidden = true; return; }
-    galleryItems.forEach((g, i) => box.append(
-      h('button', { class: 'shot reveal', type: 'button', style: `--d:${(i % 4) * 0.05}s`, 'aria-label': 'Open image: ' + (g.caption || 'photo'), onclick: () => openLightbox(i) },
-        h('img', { src: src(g.image), alt: g.caption || '', loading: 'lazy', decoding: 'async' }),
-        g.caption ? h('figcaption', { text: g.caption }) : null)));
-    // Stretch the last photo so the bento grid never ends with an empty gap.
+    galleryItems.forEach((g, i) => {
+      const img = h('img', { src: src(g.image), alt: g.caption || '', loading: 'lazy', decoding: 'async' });
+      applyFocus(img, g.focus);
+      box.append(h('button', { class: 'shot reveal', type: 'button', style: `--d:${(i % 4) * 0.05}s`, 'aria-label': 'Open image: ' + (g.caption || 'photo'), onclick: () => openLightbox(i) },
+        img, g.caption ? h('figcaption', { text: g.caption }) : null));
+    });
     const fit = () => {
       const shots = $$('.shot', box); if (!shots.length) return;
       const cols = getComputedStyle(box).gridTemplateColumns.split(' ').length;
@@ -281,25 +320,46 @@
       const rem = cells % cols;
       if (rem && shots.length > 1) shots[shots.length - 1].style.gridColumn = `span ${cols - rem + 1}`;
     };
-    fit();
-    new ResizeObserver(fit).observe(box);
+    fit(); new ResizeObserver(fit).observe(box);
   }
 
   function renderContact(p) {
+    const ctas = $('#contact-ctas'); ctas.replaceChildren();
+    const wa = (p.socials || []).find(s => s.platform === 'whatsapp' && safeUrl(s.url));
+    if (p.email) ctas.append(h('a', { class: 'btn btn--white', href: 'mailto:' + p.email }, icon(ICONS.mail), h('span', { text: 'Email me' })));
+    if (wa) ctas.append(h('a', { class: 'btn btn--wa', href: safeUrl(wa.url), target: '_blank', rel: 'noopener' }, icon(SOCIAL.whatsapp.icon), h('span', { text: 'WhatsApp' })));
+    if (p.resume) ctas.append(h('a', { class: 'btn btn--ghost-inv', href: src(p.resume), target: '_blank', rel: 'noopener' }, icon(ICONS.download), h('span', { text: 'Download CV' })));
+
     const box = $('#contact-links'); box.replaceChildren();
     const rows = [];
-    if (p.email) rows.push(['Email', p.email, 'mailto:' + p.email]);
-    if (p.phone) rows.push(['Phone', p.phone, 'tel:' + p.phone.replace(/[^\d+]/g, '')]);
-    if (p.linkedin) rows.push(['LinkedIn', p.linkedin.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, ''), p.linkedin]);
-    if (p.github) rows.push(['GitHub', p.github.replace(/^https?:\/\/(www\.)?/, ''), p.github]);
-    if (p.resume) rows.push(['Résumé', 'Download CV (PDF)', src(p.resume)]);
-    if (p.location) rows.push(['Based in', p.location, '']);
-    rows.forEach(([label, text, href]) => {
-      const u = href ? (href.startsWith('data:') ? href : safeUrl(href)) : '';
-      const inner = [h('small', { text: label }), h('span', { text }), u ? icon(ICONS.arrow) : h('i')];
-      const ext = u && !u.startsWith('mailto:') && !u.startsWith('tel:');
-      box.append(h('li', null, u ? h('a', { class: 'contact__row', href: u, target: ext ? '_blank' : null, rel: ext ? 'noopener' : null }, inner) : h('div', { class: 'contact__row' }, inner)));
+    if (p.email) rows.push([ICONS.mail, 'Email', p.email, 'mailto:' + p.email]);
+    if (p.phone) rows.push([ICONS.phone, 'Phone', p.phone, 'tel:' + p.phone.replace(/[^\d+]/g, '')]);
+    socialsOf(p).forEach(s => { const m = SOCIAL[s.platform] || SOCIAL.website; rows.push([m.icon, m.name, s.label || s.url.replace(/^https?:\/\/(www\.)?/, ''), s.url]); });
+    if (!socialsOf(p).some(s => s.platform === 'linkedin') && p.linkedin) rows.push([SOCIAL.linkedin.icon, 'LinkedIn', p.linkedin.replace(/^https?:\/\/(www\.)?/, ''), p.linkedin]);
+    if (p.location) rows.push([ICONS.pin, 'Based in', p.location, '']);
+    rows.forEach(([ic, label, text, href]) => {
+      const u = href ? safeUrl(href) : '';
+      const inner = [h('span', { class: 'ic' }, icon(ic)), h('small', { text: label }), h('span', { class: 'v', text }), u ? icon(ICONS.arrow) : h('i')];
+      box.append(h('li', null, u ? h('a', { class: 'contact__row', href: u, target: isExternal(u) ? '_blank' : null, rel: isExternal(u) ? 'noopener' : null, 'aria-label': `${label}: ${text}` }, inner) : h('div', { class: 'contact__row' }, inner)));
     });
+  }
+
+  /** Keep the search-engine profile (JSON-LD) in sync with the editable content. */
+  function updateStructuredData(site) {
+    const el = $('#ld-person'); if (!el) return;
+    const p = site.profile || {}, base = (site.meta && site.meta.siteUrl) || location.href.split(/[?#]/)[0];
+    const abs = u => { try { return new URL(u, base).href; } catch { return u; } };
+    const sameAs = [p.linkedin, p.github, ...socialsOf(p).filter(s => !['whatsapp', 'email'].includes(s.platform)).map(s => s.url)].filter(Boolean).filter((u, i, a) => a.indexOf(u) === i);
+    const data = {
+      '@context': 'https://schema.org', '@type': 'Person',
+      name: p.name, alternateName: p.shortName, jobTitle: p.headline || p.eyebrow, description: (site.meta || {}).description,
+      url: base, image: p.photo ? abs(p.photo) : undefined, email: p.email ? 'mailto:' + p.email : undefined,
+      address: p.location ? { '@type': 'PostalAddress', addressLocality: p.location } : undefined,
+      alumniOf: (site.education || []).map(e => ({ '@type': 'EducationalOrganization', name: e.school })),
+      knowsAbout: (site.skills || []).filter(g => g.icon !== 'globe').flatMap(g => g.items || []).slice(0, 20),
+      sameAs
+    };
+    try { el.textContent = JSON.stringify(data); } catch (e) { /* keep static fallback */ }
   }
 
   /* ---------- lightbox ---------- */
@@ -311,15 +371,8 @@
     $('img', lb).src = src(g.image); $('img', lb).alt = g.caption || '';
     $('figcaption', lb).textContent = [g.caption, g.date].filter(Boolean).join(' · ');
   }
-  function openLightbox(i) {
-    lastFocus = document.activeElement; showLb(i); lb.hidden = false;
-    requestAnimationFrame(() => lb.classList.add('is-open'));
-    $('.lightbox__close', lb).focus(); document.body.style.overflow = 'hidden';
-  }
-  function closeLightbox() {
-    lb.classList.remove('is-open'); setTimeout(() => { lb.hidden = true; }, 220);
-    document.body.style.overflow = ''; lastFocus && lastFocus.focus();
-  }
+  function openLightbox(i) { lastFocus = document.activeElement; showLb(i); lb.hidden = false; requestAnimationFrame(() => lb.classList.add('is-open')); $('.lightbox__close', lb).focus(); document.body.style.overflow = 'hidden'; }
+  function closeLightbox() { lb.classList.remove('is-open'); setTimeout(() => { lb.hidden = true; }, 200); document.body.style.overflow = ''; lastFocus && lastFocus.focus(); }
   $('.lightbox__close', lb).addEventListener('click', closeLightbox);
   $('.lightbox__prev', lb).addEventListener('click', () => showLb(lbIndex - 1));
   $('.lightbox__next', lb).addEventListener('click', () => showLb(lbIndex + 1));
@@ -329,109 +382,35 @@
     if (e.key === 'Escape') closeLightbox();
     if (e.key === 'ArrowLeft') showLb(lbIndex - 1);
     if (e.key === 'ArrowRight') showLb(lbIndex + 1);
-    if (e.key === 'Tab') { // keep focus inside the dialog
-      const f = $$('button', lb); const first = f[0], last = f[f.length - 1];
+    if (e.key === 'Tab') {
+      const f = $$('button', lb), first = f[0], last = f[f.length - 1];
       if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
       else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     }
   });
 
-  /* =========================================================
-     Motion
-     ========================================================= */
-
-  // Hero: PCB traces drawn once on load; pointer moves send a single
-  // signal pulse along a nearby trace (interaction-driven, never looping).
-  function heroTraces() {
-    const hero = $('.hero'), svg = $('.hero__traces');
-    const STEP = 48;
-    let traces = [];
-    function build() {
-      const W = hero.clientWidth, H = hero.clientHeight;
-      svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
-      svg.replaceChildren(); traces = [];
-      const cols = Math.floor(W / STEP), rows = Math.floor(H / STEP);
-      const count = Math.max(8, Math.round((cols * rows) / (W < 700 ? 22 : 14)));
-      const used = new Set();
-      for (let t = 0; t < count; t++) {
-        let cx = Math.floor(Math.random() * cols), cy = Math.floor(Math.random() * rows);
-        const pts = [[cx, cy]]; let dir = Math.floor(Math.random() * 4);
-        const len = 3 + Math.floor(Math.random() * 6);
-        for (let k = 0; k < len; k++) {
-          if (Math.random() < 0.4) dir = (dir + (Math.random() < 0.5 ? 1 : 3)) % 4;
-          const [dx, dy] = [[1, 0], [0, 1], [-1, 0], [0, -1]][dir];
-          cx += dx; cy += dy;
-          const key = cx + ',' + cy;
-          if (used.has(key) || cx < 0 || cy < 0 || cx > cols || cy > rows) break;
-          used.add(key); pts.push([cx, cy]);
-        }
-        if (pts.length < 3) continue;
-        // chamfer the corners like PCB routing
-        let d = `M${pts[0][0] * STEP} ${pts[0][1] * STEP}`;
-        for (let i = 1; i < pts.length; i++) {
-          const [x, y] = pts[i], nxt = pts[i + 1];
-          if (nxt && (nxt[0] - x !== x - pts[i - 1][0] || nxt[1] - y !== y - pts[i - 1][1])) {
-            const c = STEP * 0.35;
-            const bx = x * STEP - Math.sign(x - pts[i - 1][0]) * c, by = y * STEP - Math.sign(y - pts[i - 1][1]) * c;
-            const ax = x * STEP + Math.sign(nxt[0] - x) * c, ay = y * STEP + Math.sign(nxt[1] - y) * c;
-            d += ` L${bx} ${by} L${ax} ${ay}`;
-          } else d += ` L${x * STEP} ${y * STEP}`;
-        }
-        const path = document.createElementNS(svgNS, 'path');
-        path.setAttribute('d', d);
-        path.style.transitionDelay = (0.2 + Math.random() * 0.8).toFixed(2) + 's';
-        svg.append(path);
-        const L = path.getTotalLength(); path.style.setProperty('--len', L.toFixed(1));
-        const end = pts[pts.length - 1], start = pts[0];
-        [start, end].forEach(([x, y]) => {
-          const c = document.createElementNS(svgNS, 'circle');
-          c.setAttribute('cx', x * STEP); c.setAttribute('cy', y * STEP); c.setAttribute('r', 3.5);
-          c.style.transitionDelay = (1.2 + Math.random() * 0.6).toFixed(2) + 's';
-          svg.append(c);
-        });
-        const pulse = document.createElementNS(svgNS, 'circle');
-        pulse.setAttribute('r', 3); pulse.setAttribute('class', 'pulse');
-        svg.append(pulse);
-        traces.push({ path, L, pulse, busy: false, x: start[0] * STEP, y: start[1] * STEP });
-      }
-    }
-    function fire(mx, my) {
-      let best = null, bd = 260;
-      for (const t of traces) { if (t.busy) continue; const d = Math.hypot(t.x - mx, t.y - my); if (d < bd) { bd = d; best = t; } }
-      if (!best) return;
-      best.busy = true;
-      const t0 = performance.now(), dur = Math.min(1400, 300 + best.L * 2.2);
-      (function step(now) {
-        const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 2);
-        const pt = best.path.getPointAtLength(e * best.L);
-        best.pulse.setAttribute('cx', pt.x); best.pulse.setAttribute('cy', pt.y);
-        best.pulse.style.opacity = String(k < 0.85 ? 0.95 : (1 - k) / 0.15 * 0.95);
-        if (k < 1) requestAnimationFrame(step); else { best.pulse.style.opacity = '0'; setTimeout(() => (best.busy = false), 600); }
-      })(t0);
-    }
-    build();
-    let rt; new ResizeObserver(() => { clearTimeout(rt); rt = setTimeout(build, 200); }).observe(hero);
+  /* ---------- motion ---------- */
+  function heroSpotlight() {
     if (reduceMotion || !finePointer) return;
-    let last = 0;
+    const hero = $('.hero');
     hero.addEventListener('pointermove', e => {
-      const r = hero.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top;
-      hero.style.setProperty('--mx', mx + 'px'); hero.style.setProperty('--my', my + 'px');
-      const now = performance.now();
-      if (now - last > 380) { last = now; fire(mx, my); }
+      const r = hero.getBoundingClientRect();
+      hero.style.setProperty('--mx', (e.clientX - r.left) + 'px'); hero.style.setProperty('--my', (e.clientY - r.top) + 'px');
     }, { passive: true });
     hero.addEventListener('pointerleave', () => { hero.style.setProperty('--mx', '-999px'); hero.style.setProperty('--my', '-999px'); });
   }
-
   function reveals() {
     const io = new IntersectionObserver(entries => entries.forEach(e => {
       if (!e.isIntersecting) return;
       e.target.classList.add('is-in');
       $$('[data-count]', e.target).forEach(countUp);
+      if (e.target.matches('[data-count]')) countUp(e.target);
       io.unobserve(e.target);
     }), { threshold: 0.12, rootMargin: '0px 0px -5% 0px' });
     $$('.reveal').forEach(el => io.observe(el));
   }
   function countUp(el) {
+    if (el.dataset.done) return; el.dataset.done = '1';
     const target = parseFloat(el.dataset.count) || 0, suffix = el.dataset.suffix || '';
     if (reduceMotion) { el.textContent = target + suffix; return; }
     const dur = 1200, t0 = performance.now();
@@ -441,36 +420,23 @@
       if (k < 1) requestAnimationFrame(step);
     })(t0);
   }
-
   function scrollFx() {
-    const bar = $('.progress span'), nav = $('.nav'), label = $('.brand__section');
-    const fill = $('.timeline__rail span'), tl = $('#timeline');
-    const links = $$('.nav__links a');
-    const sections = $$('main section[data-index]');
-    let ticking = false, current = null;
+    const bar = $('.progress span'), fill = $('.timeline__rail span'), tl = $('#timeline');
+    const links = $$('.nav__links a'), sections = $$('main section[data-index]');
+    let ticking = false, current;
     function update() {
       ticking = false;
       const y = scrollY, max = document.documentElement.scrollHeight - innerHeight;
       bar.style.transform = `scaleX(${max > 0 ? y / max : 0})`;
-      nav.classList.toggle('is-scrolled', y > 8);
-      if (tl && fill) {
-        const r = tl.getBoundingClientRect();
-        fill.style.transform = `scaleY(${Math.min(1, Math.max(0, (innerHeight * 0.6 - r.top) / r.height))})`;
-      }
+      if (tl && fill) { const r = tl.getBoundingClientRect(); fill.style.transform = `scaleY(${Math.min(1, Math.max(0, (innerHeight * 0.6 - r.top) / r.height))})`; }
       let cur = null;
       for (const s of sections) if (s.getBoundingClientRect().top < innerHeight * 0.4) cur = s;
-      if (cur !== current) {
-        current = cur;
-        const link = cur && links.find(a => a.getAttribute('href') === '#' + cur.id);
-        label.textContent = cur ? `${cur.dataset.index} / ${link ? link.textContent : $('h2', cur).textContent}` : 'Portfolio';
-        links.forEach(a => a.setAttribute('aria-current', String(!!cur && a.getAttribute('href') === '#' + cur.id)));
-      }
+      if (cur !== current) { current = cur; links.forEach(a => a.setAttribute('aria-current', String(!!cur && a.getAttribute('href') === '#' + cur.id))); }
     }
     addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
     addEventListener('resize', update);
     update();
   }
-
   function navMenu() {
     const nav = $('.nav'), btn = $('.nav__toggle');
     const set = open => { nav.classList.toggle('is-open', open); btn.setAttribute('aria-expanded', String(open)); btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu'); };
@@ -487,14 +453,14 @@
     catch (err) {
       console.error(err);
       document.body.append(h('p', { class: 'preview-banner', text: 'Could not load content — open this site through a web server (GitHub Pages).' }));
+      $$('.reveal').forEach(el => el.classList.add('is-in'));
       return;
     }
-    const { site, feed } = data;
-    const p = site.profile || {};
+    const { site, feed } = data, p = site.profile || {};
     bindSimple(site);
-    renderHero(p);
+    renderHero(site);
     renderStats(site.stats);
-    renderAbout(p);
+    renderAbout(site);
     renderExperience(site.experience);
     renderProjects(site.projects);
     renderSkills(site.skills);
@@ -503,8 +469,9 @@
     renderUpdates(feed);
     renderGallery(site.gallery);
     renderContact(p);
+    updateStructuredData(site);
     if (PREVIEW) document.body.append(h('div', { class: 'preview-banner', text: 'PREVIEW · unsaved changes from the editor' }));
-    heroTraces();
+    heroSpotlight();
     scrollFx();
     reveals();
     requestAnimationFrame(() => requestAnimationFrame(() => document.body.classList.add('is-ready')));

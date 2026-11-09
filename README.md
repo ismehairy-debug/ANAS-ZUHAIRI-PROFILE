@@ -53,6 +53,18 @@ After that, every save from the editor redeploys the site automatically within a
 
 Unsaved edits are kept as a draft in the browser if you close the tab.
 
+**Crop & position photos.** On the profile photo, project images and gallery photos, tap **Crop & position**. Drag the picture to move it and use the zoom slider to crop in. Live previews show how it will look on the site. The original file is kept, so you can re-adjust any time.
+
+**Social media.** Go to *Profile → Social media accounts* and add, remove or reorder LinkedIn, WhatsApp, Telegram, Instagram, Facebook, GitHub and others. They appear as icons in the hero and footer, and as rows in the contact section.
+
+## Help companies find you on Google
+
+The page already includes a search-engine profile (schema.org `Person`), a canonical URL, share previews, `robots.txt` and `sitemap.xml`. To get indexed faster:
+1. Open [Google Search Console](https://search.google.com/search-console) → **Add property** → URL prefix → `https://ismehairy-debug.github.io/ANAS-ZUHAIRI-PROFILE/`.
+2. Verify ownership with the **HTML tag** method: paste the `<meta name="google-site-verification" …>` tag inside `<head>` of `index.html` (on GitHub: open the file → pencil icon → commit), or ask Claude to add it.
+3. **Sitemaps** → submit `sitemap.xml`.
+4. Put the website link in your LinkedIn *Contact info*, your CV and your email signature. Links from your own profiles help Google connect them.
+
 ## 3. LinkedIn → website
 
 LinkedIn does not offer a public API for reading a personal profile's posts. The site therefore supports three routes, and you can combine them:
