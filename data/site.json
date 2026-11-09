@@ -1,0 +1,259 @@
+{
+  "meta": {
+    "title": "Anas Zuhairi — Robotics & Automation",
+    "description": "Portfolio of Anas Zuhairi bin Zullkeffle — Electrical Engineering Technology (Robotics & Automation) student at UniMAP. PLC automation, machine vision and WebXR projects.",
+    "repo": {
+      "owner": "ismehairy-debug",
+      "name": "ANAS-ZUHAIRI-PROFILE",
+      "branch": "main"
+    }
+  },
+  "profile": {
+    "name": "Anas Zuhairi bin Zullkeffle",
+    "shortName": "Anas Zuhairi",
+    "initials": "AZ",
+    "eyebrow": "Robotics & Automation · UniMAP",
+    "roles": [
+      "PLC & Control Systems",
+      "Machine Vision Automation",
+      "Precision Manufacturing",
+      "WebXR Experiences"
+    ],
+    "tagline": "I build machines that sense, sort and decide — from PLC-driven conveyor systems to AI vision and immersive WebXR heritage galleries.",
+    "summary": [
+      "Results-oriented Electrical & Mechatronics Engineering Technology student specialising in Robotics and Automation at Universiti Malaysia Perlis (UniMAP).",
+      "Hands-on industrial experience in precision machine assembly, component measurement, preventive maintenance and process optimisation at leading technology manufacturers — Micron Memory and ViTrox.",
+      "I enjoy turning messy real-world problems into reliable automated systems: Omron PLC logic, pneumatics and actuators, camera-based vision inspection and data-driven troubleshooting."
+    ],
+    "photo": "",
+    "location": "Alor Setar, Kedah, Malaysia",
+    "email": "anaszuhairiunimap@yahoo.com",
+    "phone": "",
+    "linkedin": "https://www.linkedin.com/in/hairyisme",
+    "github": "https://github.com/ismehairy-debug",
+    "resume": "",
+    "availability": "Open to internships & engineering collaborations",
+    "facts": [
+      { "label": "Based in", "value": "Alor Setar, Kedah" },
+      { "label": "Studying", "value": "B.Eng.Tech (Robotics & Automation), UniMAP" },
+      { "label": "Focus", "value": "PLC · Vision · Precision assembly" },
+      { "label": "Languages", "value": "Malay · English · Japanese (technical)" }
+    ]
+  },
+  "stats": [
+    { "value": 21, "suffix": "", "label": "High-precision production machines maintained at Micron" },
+    { "value": 30, "suffix": "", "label": "Line operators directed on high-volume shifts" },
+    { "value": 560, "suffix": "", "label": "Attendees managed as NCIS 2026 Project Manager" },
+    { "value": 17, "suffix": "", "label": "Executive committee members led at MYSTEM" }
+  ],
+  "experience": [
+    {
+      "role": "Technician",
+      "company": "Micron Memory Sdn Bhd",
+      "location": "Batu Kawan, Penang",
+      "period": "Jul 2022 — Oct 2023",
+      "bullets": [
+        "Executed preventive and corrective maintenance on 21 high-precision semiconductor production machines, mitigating defect root causes and measurably reducing rejected product.",
+        "Analysed production and process data during high-volume peak seasons to find bottlenecks and optimise machine parameters.",
+        "Implemented machine conversion and set-up protocols to adapt equipment quickly to strict customer specification changes.",
+        "Directed 30 line operators and supported 10 shift technicians to keep machinery at peak precision and throughput."
+      ],
+      "tags": ["Semiconductor", "Preventive Maintenance", "Process Data", "Team Lead"]
+    },
+    {
+      "role": "Technical Intern",
+      "company": "ViTrox Sdn Bhd",
+      "location": "Batu Kawan, Penang",
+      "period": "Jan 2021 — Jun 2022",
+      "bullets": [
+        "Performed precision mechanical assembly, dimensional measurement and calibration of automated vision-inspection system components using specialised metrology equipment.",
+        "Verified mechanical tolerances and surface compliance against engineering specifications before customer shipment.",
+        "Mentored incoming interns on standardised precision assembly and quality-assurance procedures."
+      ],
+      "tags": ["Vision Inspection", "Metrology", "Precision Assembly", "QA"]
+    },
+    {
+      "role": "Freelance Logistics Partner",
+      "company": "Grab",
+      "location": "Perlis · Kedah · Penang",
+      "period": "2020 — Present",
+      "bullets": [
+        "Independent route planning and time allocation in a high-volume, self-regulated environment while maintaining consistent performance standards."
+      ],
+      "tags": ["Self-management", "Planning"]
+    }
+  ],
+  "projects": [
+    {
+      "id": "aurewas",
+      "title": "AUREWAS",
+      "subtitle": "PLC-Based Automatic Conveyor Sorting System for Recyclable Waste",
+      "context": "Final Year Project 1 · UniMAP · Festival Idea Putrajaya 2026 — Innovation Challenge",
+      "status": "Prototype",
+      "visual": "aurewas",
+      "image": "",
+      "featured": true,
+      "summary": "Mixed recyclables are still sorted by hand at recycling centres, schools and community collection points — slow, inconsistent and unsafe. AUREWAS is an affordable automatic conveyor that separates waste by material, built for small centres that can't afford industrial sorting lines.",
+      "highlights": [
+        "Omron CP2E-N PLC reads three sensors: inductive (metal), capacitive (plastic) and photoelectric (presence). Present-but-neither is classified as paper.",
+        "24 V push-pull solenoids eject each item into its own bin at the right moment.",
+        "Built from affordable industrial components and a 3D-printed frame.",
+        "Proposed to SWCorp Perlis as a real-world case study · supports SDG 11 & 12."
+      ],
+      "tags": ["Omron PLC", "Ladder Logic", "Inductive / Capacitive Sensors", "Solenoid Actuators", "3D Printing"],
+      "team": "With Muhammad Alynajmi bin Mohd Khairruddin · Supervisor: Dr. Syatirah binti Mohd Noor",
+      "links": []
+    },
+    {
+      "id": "galeri-warisan-maya",
+      "title": "Galeri Warisan Maya",
+      "subtitle": "The Living Heritage Gallery — a WebXR virtual-reality museum",
+      "context": "DICE 4.0 (KPT & UniSZA) · Category 3: Interactive Media (AR/VR) · Theme: Warisan",
+      "status": "National finals · PICC Putrajaya, Nov 2026",
+      "visual": "image",
+      "image": "assets/img/gwm-performance.jpg",
+      "featured": true,
+      "summary": "A browser-based VR gallery where visitors physically walk through a Malay heritage environment. Interactive exhibits of traditional dance, singing and silat come alive through proximity triggers and spatial audio — no app install, it runs straight from the browser and on Meta Quest 2.",
+      "highlights": [
+        "Team Leader & WebXR developer for Pasukan DICE 4.0 UniMAP.",
+        "Six heritage branches: Performing Arts, Clothing & Textiles, Crafts & Weaponry, Heritage Food, Customs & Literature, and Architecture.",
+        "Room-scale locomotion, proximity-triggered exhibits and spatial-audio falloff.",
+        "Built with Three.js and the WebXR Device API, hosted on GitHub Pages."
+      ],
+      "tags": ["WebXR", "Three.js", "VR · Meta Quest 2", "Spatial Audio", "Cultural Heritage"],
+      "team": "With Muhammad Afifi bin Muhd Shukri, Baraah Ali Omar Balagem & Ahmad Haziq bin Ariff · Mentor: Dr. Mohd Hafiz Ismail",
+      "links": [
+        { "label": "Live demo", "url": "https://ismehairy-debug.github.io/galeri-warisan-maya/" },
+        { "label": "Source code", "url": "https://github.com/ismehairy-debug/galeri-warisan-maya" }
+      ]
+    },
+    {
+      "id": "ai-rewas",
+      "title": "AI-REWAS",
+      "subtitle": "AI-Powered Vision & Automated Segregation System",
+      "context": "Final Year Project 2 · UniMAP",
+      "status": "In progress",
+      "visual": "vision",
+      "image": "",
+      "featured": false,
+      "summary": "The next generation of AUREWAS: replacing proximity sensing with camera-based AI vision for material identification and surface-geometry classification.",
+      "highlights": [
+        "Experimental trials to evaluate optical identification accuracy.",
+        "Real-time vision output integrated with Omron PLC control for fast, precise actuation.",
+        "Iterative parameter tuning to raise throughput and operational safety."
+      ],
+      "tags": ["Computer Vision", "AI", "Omron PLC", "Experimental Design"],
+      "team": "",
+      "links": []
+    },
+    {
+      "id": "fifo-inventory",
+      "title": "Stock Take Monitoring & FIFO Inventory",
+      "subtitle": "Database monitoring system for raw-material inventory",
+      "context": "Design Project · UniMAP · Oct 2025",
+      "status": "Presented at EMDIEX 2026",
+      "visual": "database",
+      "image": "",
+      "featured": false,
+      "summary": "A database-driven stock monitoring system that controls raw-material inventory using FIFO logic for the Kimie Z Ayam Goreng warehouse.",
+      "highlights": [
+        "Designed and deployed with pgAdmin and XAMPP.",
+        "Presented to industry representatives at the Electrical Mechatronic Design Innovation Expo (EMDIEX 2026)."
+      ],
+      "tags": ["PostgreSQL · pgAdmin", "XAMPP", "FIFO Logic", "HTML"],
+      "team": "",
+      "links": []
+    }
+  ],
+  "skills": [
+    {
+      "group": "Precision Engineering & Manufacturing",
+      "icon": "gear",
+      "items": ["Precision Component Assembly", "Metrology & Dimensional Measurement", "Tooling & Machine Maintenance", "Process Data Analysis", "Machine Conversion Protocols", "Quality Control"]
+    },
+    {
+      "group": "Automation, Control & Vision",
+      "icon": "chip",
+      "items": ["Camera-Based AI Vision Inspection", "PLC Programming (Omron)", "Pneumatic & Actuator Systems", "Robot Axis Teaching", "Automated Guided Systems"]
+    },
+    {
+      "group": "Design & Software Tools",
+      "icon": "code",
+      "items": ["FreeCAD (3D CAD)", "MATLAB", "pgAdmin / PostgreSQL", "Arduino Microcontrollers", "HTML · XAMPP", "Three.js · WebXR"]
+    },
+    {
+      "group": "Languages",
+      "icon": "globe",
+      "items": ["Malay — Native", "English — Professional", "Japanese — Technical exposure (JMTI)"]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Bachelor of Electrical Engineering Technology (Robotics & Automation Technology) with Honours",
+      "school": "Universiti Malaysia Perlis (UniMAP)",
+      "period": "Oct 2023 — Present",
+      "grade": "",
+      "notes": "Mechanical & Machine Design · Drive & Actuator Systems · Vision Systems · Microcontrollers · Automated Guided Systems · Networking Automation"
+    },
+    {
+      "degree": "Diploma in Mechatronic Technology (DKM Level 4)",
+      "school": "Japan-Malaysia Technical Institute (JMTI), Penang",
+      "period": "Jul 2020 — Jul 2022",
+      "grade": "CGPA 3.11",
+      "notes": "Pneumatic Systems · PLC Programming (Omron) · Project Management · Occupational Safety & Health"
+    },
+    {
+      "degree": "Sijil Teknologi Perindustrian Mekatronik (SKM Level 3)",
+      "school": "Institut Latihan Perindustrian (ILP), Perlis",
+      "period": "Jan 2019 — Jan 2020",
+      "grade": "CGPA 3.47",
+      "notes": ""
+    }
+  ],
+  "leadership": [
+    {
+      "title": "President",
+      "org": "MYSTEM Ambassador Club, UniMAP",
+      "period": "Oct 2025 — Present",
+      "description": "Leading university-wide STEM outreach programmes and a 17-member executive committee."
+    },
+    {
+      "title": "Lead Exco for STEM",
+      "org": "Student Representative (SREET), FKTE UniMAP",
+      "period": "Oct 2025 — Present",
+      "description": "Coordinating faculty-level STEM initiatives and student engagement activities."
+    },
+    {
+      "title": "Team Leader",
+      "org": "DICE 4.0 — Digital Innovation Creativepreneur (KPT & UniSZA)",
+      "period": "2026",
+      "description": "Led Pasukan DICE 4.0 UniMAP in the national AR/VR category with Galeri Warisan Maya."
+    },
+    {
+      "title": "Project Manager",
+      "org": "National Career Industrial Summit (NCIS 2026)",
+      "period": "2026",
+      "description": "Managed event logistics and crowd control for 560 student attendees and directed crew operations."
+    },
+    {
+      "title": "Engineering Presenter",
+      "org": "Jaguh Keusahawanan National (UUM 2026)",
+      "period": "2026",
+      "description": "INSKEN bootcamp participant presenting engineering product commercialisation plans and business proposals."
+    },
+    {
+      "title": "International Delegate",
+      "org": "Ningbo International University Students & Sister Cities Youth Exchange Camp, China",
+      "period": "Oct 2026",
+      "description": "Represented UniMAP at Ningbo Polytechnic University, Zhejiang (18 – 24 Oct 2026)."
+    }
+  ],
+  "gallery": [
+    { "image": "assets/img/gwm-performance.jpg", "caption": "Galeri Warisan Maya — performing-arts pavilion concept", "date": "2026" },
+    { "image": "assets/img/gwm-river-village.jpg", "caption": "Galeri Warisan Maya — riverside heritage village environment", "date": "2026" },
+    { "image": "assets/img/gwm-heritage-hall.jpg", "caption": "Galeri Warisan Maya — customs & music hall", "date": "2026" },
+    { "image": "assets/img/gwm-craftsmen.jpg", "caption": "Galeri Warisan Maya — crafts & weaponry workshop", "date": "2026" },
+    { "image": "assets/img/gwm-istana.jpg", "caption": "Architecture reference — Malay palace", "date": "2026" },
+    { "image": "assets/img/gwm-market.jpg", "caption": "Galeri Warisan Maya — heritage food & market scene", "date": "2026" }
+  ]
+}
