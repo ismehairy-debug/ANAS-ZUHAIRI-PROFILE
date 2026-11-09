@@ -7,7 +7,7 @@
       "name": "ANAS-ZUHAIRI-PROFILE",
       "branch": "main"
     },
-    "siteUrl": "https://anaszuhairi.com/"
+    "siteUrl": "https://ismehairy-debug.github.io/ANAS-ZUHAIRI-PROFILE/"
   },
   "profile": {
     "name": "Anas Zuhairi bin Zullkeffle",
@@ -34,6 +34,11 @@
       "y": 85,
       "zoom": 1.35
     },
+    "badges": [
+      "2+ yrs industry · Micron & ViTrox",
+      "Robotics & Automation · UniMAP",
+      "DICE 4.0 team leader (national)"
+    ],
     "location": "Alor Setar, Kedah, Malaysia",
     "email": "anaszuhairiunimap@yahoo.com",
     "phone": "01111510221",
@@ -79,6 +84,14 @@
       "UniMAP",
       "JMTI",
       "ILP Perlis"
+    ],
+    "searchSuggestions": [
+      "PLC",
+      "Machine vision",
+      "Micron",
+      "Precision assembly",
+      "WebXR",
+      "Leadership"
     ],
     "facts": [
       {

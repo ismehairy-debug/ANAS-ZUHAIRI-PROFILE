@@ -135,6 +135,11 @@
       cell.classList.add('has-photo');
     }
     $('.photo__cap', cell).textContent = p.photoCaption || '';
+    const badges = $('#hero-badges'); badges.replaceChildren();
+    (p.badges || []).slice(0, 3).forEach(b => badges.append(h('li', { text: b })));
+    if (!badges.children.length) badges.hidden = true;
+    const chips = $('#finder-chips'); chips.replaceChildren();
+    (p.searchSuggestions || []).slice(0, 5).forEach(q => chips.append(h('button', { class: 'chip', type: 'button', text: q, onclick: () => openSearch(q) })));
     const fb = $('#factbar'); fb.replaceChildren();
     (p.facts || []).slice(0, 4).forEach(x => fb.append(h('div', null, h('dt', { text: x.label }), h('dd', { text: x.value }))));
     if (!fb.children.length) fb.hidden = true;
@@ -166,18 +171,26 @@
     if (!langs.children.length) { langs.hidden = true; langs.previousElementSibling.hidden = true; }
   }
 
+  const isPhone = () => window.matchMedia('(max-width: 767px)').matches;
   function renderExperience(list = []) {
     const tl = $('#timeline');
     $$('.job', tl).forEach(n => n.remove());
-    list.forEach((j, i) => tl.append(
-      h('li', { class: 'job reveal', style: `--d:${i * 0.05}s` },
+    list.forEach((j, i) => {
+      // <details>: always open on desktop; on phones only the latest job starts open (tap to expand others)
+      const card = h('details', { class: 'job__card', open: !isPhone() || i === 0 ? true : null },
+        h('summary', null,
+          h('div', null,
+            h('h3', { class: 'job__role', text: j.role }),
+            h('p', { class: 'job__company' }, j.company, j.location ? h('span', { text: ' · ' + j.location }) : null)),
+          h('span', { class: 'job__more', 'aria-hidden': 'true' }, icon(['M6 9l6 6 6-6']))),
+        h('ul', { class: 'bullets' }, (j.bullets || []).map(b => h('li', { text: b }))),
+        (j.tags && j.tags.length) ? h('div', { class: 'tags' }, j.tags.map(t => h('span', { class: 'tag', text: t }))) : null);
+      card.querySelector('summary').addEventListener('click', e => { if (!isPhone()) e.preventDefault(); });
+      tl.append(h('li', { class: 'job reveal', id: 'exp-' + i, style: `--d:${i * 0.05}s` },
         h('div', { class: 'job__when', text: j.period }),
         h('span', { class: 'job__node', 'aria-hidden': 'true' }),
-        h('article', { class: 'job__card' },
-          h('h3', { class: 'job__role', text: j.role }),
-          h('p', { class: 'job__company' }, j.company, j.location ? h('span', { text: ' · ' + j.location }) : null),
-          h('ul', { class: 'bullets' }, (j.bullets || []).map(b => h('li', { text: b }))),
-          (j.tags && j.tags.length) ? h('div', { class: 'tags' }, j.tags.map(t => h('span', { class: 'tag', text: t }))) : null))));
+        card));
+    });
   }
 
   const sims = [];
@@ -235,7 +248,7 @@
   function renderSkills(list = []) {
     const box = $('#skills-list'); box.replaceChildren();
     list.forEach((g, i) => box.append(
-      h('article', { class: 'skill reveal', style: `--d:${i * 0.06}s` },
+      h('article', { class: 'skill reveal', id: 'skill-' + i, style: `--d:${i * 0.06}s` },
         h('span', { class: 'skill__icon' }, icon(ICONS[g.icon] || ICONS.chip)),
         h('h3', { class: 'skill__title', text: g.group }),
         h('ul', { class: 'skill__list' }, (g.items || []).map(t => h('li', { text: t }))))));
@@ -244,7 +257,7 @@
   function renderEducation(list = []) {
     const box = $('#edu-list'); box.replaceChildren();
     list.forEach((e, i) => box.append(
-      h('li', { class: 'reveal', style: `--d:${i * 0.06}s` },
+      h('li', { class: 'reveal', id: 'edu-' + i, style: `--d:${i * 0.06}s` },
         h('span', { class: 'edu__when', text: e.period }),
         h('h4', { class: 'edu__degree', text: e.degree }),
         h('div', null, h('span', { class: 'edu__school', text: e.school }), e.grade ? h('span', { class: 'grade', text: e.grade }) : null),
@@ -254,7 +267,7 @@
   function renderLeadership(list = []) {
     const box = $('#lead-list'); box.replaceChildren();
     list.forEach((l, i) => box.append(
-      h('li', { class: 'reveal', style: `--d:${i * 0.05}s` },
+      h('li', { class: 'reveal', id: 'lead-' + i, style: `--d:${i * 0.05}s` },
         h('span', { class: 'lead__num', text: String(i + 1).padStart(2, '0') }),
         h('div', null,
           h('span', { class: 'lead__when', text: l.period }),
@@ -282,7 +295,7 @@
       const isLi = p.source === 'linkedin' || /linkedin\.com/.test(p.url || '');
       const url = safeUrl(p.url);
       const embed = isLi && !p.text && !p.image ? linkedInEmbedUrl(p.url) : '';
-      const card = h('article', { class: 'post reveal', style: `--d:${(i % 3) * 0.07}s` });
+      const card = h('article', { class: 'post reveal', id: 'post-' + i, style: `--d:${(i % 3) * 0.07}s` });
       if (embed) { card.append(h('iframe', { class: 'post__embed', src: embed, title: 'LinkedIn post', loading: 'lazy', allowfullscreen: true })); box.append(card); return; }
       if (p.image) card.append(h('div', { class: 'post__media' }, h('img', { src: src(p.image), alt: '', loading: 'lazy' })));
       else {
@@ -362,6 +375,150 @@
     try { el.textContent = JSON.stringify(data); } catch (e) { /* keep static fallback */ }
   }
 
+  /* ---------- profile search (recruiter mode) ---------- */
+  const SEARCH_ICONS = {
+    Experience: ['M3 7h18v13H3z', 'M8 7V4h8v3M3 12h18'],
+    Projects: ['M12 2l9 5v10l-9 5-9-5V7z', 'M12 22V12M21 7l-9 5-9-5'],
+    Skills: ICONS.chip,
+    Education: ['M2 9l10-5 10 5-10 5z', 'M6 11v5c3 2 9 2 12 0v-5'],
+    Leadership: ['M4 22V4M4 4h13l-2 4 2 4H4'],
+    Updates: ['M4 4h16v16H4z', 'M8 9h8M8 13h8M8 17h5'],
+    Contact: ICONS.mail
+  };
+  let searchIndex = [];
+  function buildIndex(site, feed) {
+    const p = site.profile || {}, idx = [];
+    const add = (group, id, title, sub, body, weight = 1) => idx.push({ group, id, title, sub, hay: [title, sub, body].join(' ').toLowerCase(), titleL: String(title).toLowerCase(), weight });
+    (site.experience || []).forEach((j, i) => add('Experience', 'exp-' + i, `${j.role} · ${j.company}`, `${j.period}${j.location ? ' · ' + j.location : ''}`, [...(j.bullets || []), ...(j.tags || [])].join(' '), 1.2));
+    (site.projects || []).forEach(pr => add('Projects', pr.id ? 'project-' + pr.id : '', pr.title, pr.subtitle || pr.context || '', [pr.summary, pr.context, ...(pr.highlights || []), ...(pr.tags || []), pr.team].join(' '), 1.2));
+    (site.skills || []).forEach((g, i) => (g.items || []).forEach(s => add('Skills', 'skill-' + i, s, g.group, '')));
+    (site.education || []).forEach((e, i) => add('Education', 'edu-' + i, e.degree, `${e.school} · ${e.period}`, [e.notes, e.grade].join(' ')));
+    (site.leadership || []).forEach((l, i) => add('Leadership', 'lead-' + i, `${l.title} · ${l.org}`, l.period || '', l.description || ''));
+    (feed.posts || []).slice().sort((a, b) => (Date.parse(b.date) || 0) - (Date.parse(a.date) || 0)).slice(0, 9)
+      .forEach((x, i) => add('Updates', 'post-' + i, (x.text || 'LinkedIn post').slice(0, 80), fmtDate(x.date), x.text || ''));
+    if (p.email) add('Contact', 'contact', 'Email', p.email, 'email mail contact hire', 0.8);
+    socialsOf(p).forEach(s => add('Contact', 'contact', (SOCIAL[s.platform] || SOCIAL.website).name, s.label || '', 'contact social ' + s.platform, 0.8));
+    if (p.resume) add('Contact', 'contact', 'Download CV / Résumé', 'PDF', 'cv resume résumé download', 0.9);
+    searchIndex = idx.filter(x => x.id);
+  }
+  function highlight(text, terms) {
+    const frag = document.createDocumentFragment(), s = String(text || '');
+    const re = terms.length ? new RegExp('(' + terms.map(t => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')', 'ig') : null;
+    if (!re) { frag.append(s); return frag; }
+    s.split(re).forEach((part, i) => frag.append(i % 2 ? h('mark', { text: part }) : part));
+    return frag;
+  }
+  const sDlg = $('#search'), sInput = $('#search-input'), sResults = $('#search-results'), sStatus = $('#search-status');
+  let sActive = -1, sLastFocus = null, sTimer = 0;
+  function runSearch() {
+    const q = sInput.value.trim().toLowerCase();
+    const terms = q.split(/\s+/).filter(t => t.length > 0);
+    sResults.replaceChildren(); sActive = -1;
+    $('#search-chips').hidden = !!q;
+    if (!terms.length) { sStatus.textContent = 'Popular searches'; return; }
+    const hits = searchIndex.map(it => {
+      let score = 0;
+      for (const t of terms) {
+        if (!it.hay.includes(t)) return null;
+        score += (it.titleL.includes(t) ? 3 : 1) + (it.titleL.startsWith(t) ? 1 : 0);
+      }
+      return { it, score: score * it.weight };
+    }).filter(Boolean).sort((a, b) => b.score - a.score).slice(0, 24);
+    sStatus.textContent = hits.length ? `${hits.length} result${hits.length > 1 ? 's' : ''}` : 'No results';
+    if (!hits.length) {
+      sResults.append(h('div', { class: 'search__empty' }, h('p', { text: `Nothing found for “${sInput.value.trim()}”. Try one of these:` }),
+        h('div', { class: 'search__chips' }, suggestions().map(sq => h('button', { class: 'chip', type: 'button', text: sq, onclick: () => { sInput.value = sq; runSearch(); sInput.focus(); } })))));
+      return;
+    }
+    const groups = {};
+    hits.forEach(x => (groups[x.it.group] = groups[x.it.group] || []).push(x.it));
+    const ORDER = ['Experience', 'Projects', 'Skills', 'Education', 'Leadership', 'Updates', 'Contact'];
+    Object.entries(groups).sort((a, b) => ORDER.indexOf(a[0]) - ORDER.indexOf(b[0])).forEach(([g, items]) => {
+      sResults.append(h('div', { class: 'res-group', text: g }));
+      items.forEach(it => sResults.append(h('button', { class: 'res', type: 'button', 'data-target': it.id, onclick: () => goTo(it.id) },
+        h('span', { class: 'res__ic' }, icon(SEARCH_ICONS[g] || ICONS.arrow)),
+        h('span', null, h('span', { class: 'res__t' }, highlight(it.title, terms)), it.sub ? h('span', { class: 'res__s' }, highlight(it.sub, terms)) : null),
+        icon(['M9 6l6 6-6 6']))));
+    });
+  }
+  let siteRef = null;
+  const suggestions = () => ((siteRef && siteRef.profile && siteRef.profile.searchSuggestions) || ['PLC', 'Vision', 'Micron']).slice(0, 6);
+  function openSearch(q) {
+    sLastFocus = document.activeElement;
+    sDlg.hidden = false; document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => sDlg.classList.add('is-open'));
+    sInput.value = typeof q === 'string' ? q : '';
+    const chips = $('#search-chips'); chips.replaceChildren();
+    suggestions().forEach(sq => chips.append(h('button', { class: 'chip', type: 'button', text: sq, onclick: () => { sInput.value = sq; runSearch(); sInput.focus(); } })));
+    runSearch();
+    setTimeout(() => sInput.focus(), 30);
+  }
+  function closeSearch(restore = true) {
+    sDlg.classList.remove('is-open'); document.body.style.overflow = '';
+    setTimeout(() => { sDlg.hidden = true; }, 180);
+    if (restore && sLastFocus) sLastFocus.focus();
+  }
+  function goTo(id) {
+    closeSearch(false);
+    const el = document.getElementById(id); if (!el) return;
+    const det = el.querySelector('details') || (el.matches('details') ? el : null);
+    if (det) det.open = true;
+    el.classList.add('is-in');
+    setTimeout(() => {
+      el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center', inline: 'start' });
+      el.classList.remove('is-found'); void el.offsetWidth; el.classList.add('is-found');
+      el.setAttribute('tabindex', '-1'); el.focus({ preventScroll: true });
+    }, 60);
+  }
+  function setupSearch() {
+    $$('[data-open-search]').forEach(b => b.addEventListener('click', () => openSearch()));
+    $('.search__close', sDlg).addEventListener('click', () => closeSearch());
+    sDlg.addEventListener('click', e => { if (e.target === sDlg) closeSearch(); });
+    sInput.addEventListener('input', () => { clearTimeout(sTimer); sTimer = setTimeout(runSearch, 90); });
+    sDlg.addEventListener('keydown', e => {
+      const items = $$('.res', sResults);
+      if (e.key === 'Escape') { e.preventDefault(); closeSearch(); return; }
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        if (!items.length) return;
+        e.preventDefault();
+        sActive = (sActive + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+        items.forEach((x, i) => x.classList.toggle('is-active', i === sActive));
+        items[sActive].scrollIntoView({ block: 'nearest' });
+      }
+      if (e.key === 'Enter' && e.target === sInput && !e.isComposing && e.keyCode !== 229) {
+        e.preventDefault();
+        const pick = items[sActive >= 0 ? sActive : 0];
+        if (pick) goTo(pick.dataset.target);
+      }
+      if (e.key === 'Tab') { // keep focus inside the dialog
+        const f = [sInput, $('.search__close', sDlg), ...$$('button', sResults), ...$$('#search-chips button')].filter(x => x.offsetParent);
+        const first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+    document.addEventListener('keydown', e => {
+      if (e.key === '/' && sDlg.hidden && !/input|textarea|select/i.test(document.activeElement.tagName)) { e.preventDefault(); openSearch(); }
+    });
+  }
+
+  /* ---------- swipeable projects on phones ---------- */
+  function projectsPager() {
+    const box = $('#projects-list'), cards = $$('.project', box);
+    if (cards.length < 2) return;
+    const hint = h('p', { class: 'swipe-hint' }, 'Swipe to see all ' + cards.length + ' projects', icon(['M5 12h14M13 6l6 6-6 6']));
+    box.before(hint);
+    const pager = h('div', { class: 'pager', role: 'group', 'aria-label': 'Projects' });
+    cards.forEach((c, i) => pager.append(h('button', { type: 'button', 'aria-label': `Project ${i + 1} of ${cards.length}`, onclick: () => box.scrollTo({ left: c.offsetLeft - box.offsetLeft - 16, behavior: reduceMotion ? 'auto' : 'smooth' }) })));
+    box.after(pager);
+    const dots = $$('button', pager);
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting && e.intersectionRatio > 0.6) dots.forEach((d, i) => d.setAttribute('aria-current', String(cards[i] === e.target)));
+    }), { root: box, threshold: [0.6] });
+    cards.forEach(c => io.observe(c));
+    dots[0].setAttribute('aria-current', 'true');
+  }
+
   /* ---------- lightbox ---------- */
   const lb = $('.lightbox');
   let lbIndex = 0, lastFocus = null;
@@ -422,7 +579,7 @@
   }
   function scrollFx() {
     const bar = $('.progress span'), fill = $('.timeline__rail span'), tl = $('#timeline');
-    const links = $$('.nav__links a'), sections = $$('main section[data-index]');
+    const links = $$('.nav__links a'), sections = $$('main section[data-index]'), tabs = $$('.tabbar a');
     let ticking = false, current;
     function update() {
       ticking = false;
@@ -431,7 +588,12 @@
       if (tl && fill) { const r = tl.getBoundingClientRect(); fill.style.transform = `scaleY(${Math.min(1, Math.max(0, (innerHeight * 0.6 - r.top) / r.height))})`; }
       let cur = null;
       for (const s of sections) if (s.getBoundingClientRect().top < innerHeight * 0.4) cur = s;
-      if (cur !== current) { current = cur; links.forEach(a => a.setAttribute('aria-current', String(!!cur && a.getAttribute('href') === '#' + cur.id))); }
+      if (cur !== current) {
+        current = cur;
+        links.forEach(a => a.setAttribute('aria-current', String(!!cur && a.getAttribute('href') === '#' + cur.id)));
+        const tab = !cur ? 'top' : ['experience', 'projects', 'contact'].includes(cur.id) ? cur.id : '';
+        tabs.forEach(a => a.setAttribute('aria-current', String(a.dataset.tab === tab)));
+      }
     }
     addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
     addEventListener('resize', update);
@@ -470,6 +632,10 @@
     renderGallery(site.gallery);
     renderContact(p);
     updateStructuredData(site);
+    siteRef = site;
+    buildIndex(site, feed);
+    setupSearch();
+    projectsPager();
     if (PREVIEW) document.body.append(h('div', { class: 'preview-banner', text: 'PREVIEW · unsaved changes from the editor' }));
     heroSpotlight();
     scrollFx();

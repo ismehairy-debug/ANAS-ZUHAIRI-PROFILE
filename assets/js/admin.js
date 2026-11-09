@@ -132,6 +132,8 @@
             { key: 'url', label: 'Link', type: 'url', wide: true }
           ] },
         { key: 'proofOrgs', label: 'Organisations strip (companies & schools)', type: 'tags', wide: true, help: 'Comma separated — shown under the top section, e.g. Micron Memory, ViTrox, UniMAP.' },
+        { key: 'badges', label: 'Highlight badges on your photo (max 3)', type: 'lines', wide: true, rows: 3, help: 'One per line, short — e.g. “2+ yrs industry · Micron & ViTrox”.' },
+        { key: 'searchSuggestions', label: 'Search suggestions', type: 'tags', wide: true, help: 'Comma separated — quick buttons under the search box, e.g. PLC, Machine vision, Micron.' },
         { key: 'location', label: 'Location' },
         { key: 'resume', label: 'CV / Résumé (PDF)', type: 'file', accept: 'application/pdf', help: 'Adds a “Download CV” link in the contact section.' },
         { key: 'facts', label: 'Quick facts (About section)', type: 'list', wide: true, itemName: 'fact', title: x => `${x.label || 'Label'} — ${x.value || ''}`, fields: [{ key: 'label', label: 'Label' }, { key: 'value', label: 'Value' }] }

@@ -7,14 +7,14 @@
   <meta name="description" content="Anas Zuhairi bin Zullkeffle — Robotics & Automation engineering technology student at UniMAP (Malaysia) with 2+ years of semiconductor and machine-vision industry experience at Micron and ViTrox. PLC automation, machine vision and WebXR projects. Open to internships.">
   <meta name="author" content="Anas Zuhairi bin Zullkeffle">
   <meta name="robots" content="index, follow, max-image-preview:large">
-  <link rel="canonical" href="https://anaszuhairi.com/">
+  <link rel="canonical" href="https://ismehairy-debug.github.io/ANAS-ZUHAIRI-PROFILE/">
   <meta name="theme-color" content="#1E3A5F">
   <meta property="og:type" content="profile">
   <meta property="og:site_name" content="Anas Zuhairi — Portfolio">
   <meta property="og:title" content="Anas Zuhairi — Robotics & Automation Engineering Student">
   <meta property="og:description" content="PLC automation, machine vision and precision manufacturing. Industry experience at Micron and ViTrox. Projects: AUREWAS, AI-REWAS, Galeri Warisan Maya.">
-  <meta property="og:url" content="https://anaszuhairi.com/">
-  <meta property="og:image" content="https://anaszuhairi.com/assets/uploads/2026/img-2008-0zqoq.jpg">
+  <meta property="og:url" content="https://ismehairy-debug.github.io/ANAS-ZUHAIRI-PROFILE/">
+  <meta property="og:image" content="https://ismehairy-debug.github.io/ANAS-ZUHAIRI-PROFILE/assets/uploads/2026/img-2008-0zqoq.jpg">
   <meta property="profile:first_name" content="Anas Zuhairi">
   <meta property="profile:last_name" content="Zullkeffle">
   <meta name="twitter:card" content="summary_large_image">
@@ -31,8 +31,8 @@
     "name": "Anas Zuhairi bin Zullkeffle",
     "alternateName": "Anas Zuhairi",
     "jobTitle": "Robotics & Automation Engineering Technology Student",
-    "url": "https://anaszuhairi.com/",
-    "image": "https://anaszuhairi.com/assets/uploads/2026/img-2008-0zqoq.jpg",
+    "url": "https://ismehairy-debug.github.io/ANAS-ZUHAIRI-PROFILE/",
+    "image": "https://ismehairy-debug.github.io/ANAS-ZUHAIRI-PROFILE/assets/uploads/2026/img-2008-0zqoq.jpg",
     "email": "mailto:anaszuhairiunimap@yahoo.com",
     "address": { "@type": "PostalAddress", "addressLocality": "Alor Setar", "addressRegion": "Kedah", "addressCountry": "MY" },
     "alumniOf": [
@@ -66,6 +66,9 @@
         <a href="#updates">Updates</a>
         <a href="#contact">Contact</a>
       </nav>
+      <button class="nav__search" type="button" data-open-search aria-haspopup="dialog" aria-label="Search profile">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM21 21l-4.3-4.3"/></svg>
+      </button>
       <a class="btn btn--primary btn--sm nav__cv" id="nav-cv" href="#contact">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
         <span>Download CV</span>
@@ -84,6 +87,14 @@
           <h1 class="hero__name reveal" id="hero-name" data-bind="profile.shortName">Anas Zuhairi</h1>
           <p class="hero__role reveal" data-bind="profile.headline">Robotics & Automation Engineering Technology Student</p>
           <p class="hero__tagline reveal" data-bind="profile.tagline">I build machines that sense, sort and decide — from PLC-driven conveyor systems to AI vision and immersive WebXR heritage galleries.</p>
+          <div class="finder reveal">
+            <button class="finder__btn" type="button" data-open-search aria-haspopup="dialog">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM21 21l-4.3-4.3"/></svg>
+              <span class="finder__ph">Search my skills, projects, experience…</span>
+              <kbd class="finder__kbd mono" aria-hidden="true">/</kbd>
+            </button>
+            <div class="finder__chips" id="finder-chips" aria-label="Popular searches"></div>
+          </div>
           <div class="hero__ctas reveal">
             <a class="btn btn--primary" id="hero-cv" href="#contact">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg><span>Download CV</span>
@@ -97,6 +108,7 @@
             <img class="photo" alt="" hidden>
             <div class="photo__fallback" aria-hidden="true"><span data-bind="profile.initials">AZ</span></div>
           </div>
+          <ul class="badges" id="hero-badges" aria-label="Highlights"></ul>
           <figcaption class="photo__cap"></figcaption>
         </figure>
       </div>
@@ -239,6 +251,31 @@
       <span class="mono"><a href="#top">Back to top ↑</a> · <a href="admin.html">Edit site</a></span>
     </div>
   </footer>
+
+  <!-- Profile search (opens from the hero, "/" key, or the phone bottom bar) -->
+  <div class="search" id="search" role="dialog" aria-modal="true" aria-labelledby="search-title" hidden>
+    <div class="search__panel">
+      <h2 class="sr-only" id="search-title">Search Anas Zuhairi's profile</h2>
+      <form class="search__bar" role="search" onsubmit="return false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM21 21l-4.3-4.3"/></svg>
+        <label class="sr-only" for="search-input">Search skills, projects, experience</label>
+        <input id="search-input" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" spellcheck="false" placeholder="Try “PLC”, “vision”, “Micron”…" aria-controls="search-results" aria-describedby="search-status">
+        <button class="search__close" type="button" aria-label="Close search">Esc</button>
+      </form>
+      <div class="search__chips" id="search-chips" aria-label="Suggestions"></div>
+      <p class="search__status mono" id="search-status" aria-live="polite"></p>
+      <div class="search__results" id="search-results"></div>
+    </div>
+  </div>
+
+  <!-- Phone bottom navigation (≤5 items) -->
+  <nav class="tabbar" aria-label="Quick navigation">
+    <a href="#top" data-tab="top"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l9-8 9 8M5 10v10h14V10"/></svg><span>Home</span></a>
+    <a href="#experience" data-tab="experience"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v13H3zM8 7V4h8v3M3 12h18"/></svg><span>Work</span></a>
+    <button type="button" class="tabbar__search" data-open-search aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM21 21l-4.3-4.3"/></svg><span>Search</span></button>
+    <a href="#projects" data-tab="projects"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l9 5v10l-9 5-9-5V7zM12 22V12M21 7l-9 5-9-5"/></svg><span>Projects</span></a>
+    <a href="#contact" data-tab="contact"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zM3 7l9 6 9-6"/></svg><span>Contact</span></a>
+  </nav>
 
   <div class="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
     <button class="lb-btn lightbox__close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>

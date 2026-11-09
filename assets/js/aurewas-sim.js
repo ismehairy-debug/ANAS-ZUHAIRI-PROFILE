@@ -97,13 +97,14 @@
       // design the scene in a band of at most 440px and centre it vertically
       const Hc = Math.min(H, 440), oy = (H - Hc) / 2;
       const beltH = clamp(Hc * 0.13, 34, 52);
-      const beltY = oy + Hc * 0.47 - beltH / 2;
+      // on narrow cards the PLC panel sits under the status badge, so push the belt lower
+      const beltY = oy + Hc * (compact ? 0.58 : 0.47) - beltH / 2;
       const x0 = W * 0.04, x1 = W * 0.96;
       const gate = x0 + (x1 - x0) * 0.2;
       const st = [0.45, 0.66, 0.87].map(f => x0 + (x1 - x0) * f);
       const binW = Math.min(W * 0.17, 110), binH = clamp(Hc * 0.2, 54, 84);
       const binY = beltY + beltH + clamp(Hc * 0.09, 26, 44);
-      const panelY = Math.max(14, oy + 4);
+      const panelY = compact ? Math.max(54, oy + 54) : Math.max(14, oy + 4);
       s.L = { compact, beltH, beltY, x0, x1, gate, st, binW, binH, binY, panelY, size: clamp(beltH * 0.52, 15, 26), speed: Math.max(70, W * 0.12) };
     },
     frame(ctx, s, W, H, dt) {
