@@ -5,234 +5,229 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Anas Zuhairi — Robotics & Automation</title>
   <meta name="description" content="Portfolio of Anas Zuhairi bin Zullkeffle — Electrical Engineering Technology (Robotics & Automation) student at UniMAP. PLC automation, machine vision and WebXR projects.">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#F8FAFC">
   <meta property="og:type" content="website">
   <meta property="og:title" content="Anas Zuhairi — Robotics & Automation">
   <meta property="og:description" content="PLC automation, machine vision and WebXR projects — AUREWAS, AI-REWAS and Galeri Warisan Maya.">
   <meta property="og:image" content="assets/img/gwm-performance.jpg">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a5cff'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='26' fill='white' text-anchor='middle'%3EAZ%3C/text%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%230F172A'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='26' fill='white' text-anchor='middle'%3EAZ%3C/text%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-  <div class="scroll-progress" aria-hidden="true"><span></span></div>
-  <div class="cursor-glow" aria-hidden="true"></div>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="progress" aria-hidden="true"><span></span></div>
 
-  <div class="boot" aria-hidden="true">
-    <div class="boot__inner">
-      <div class="boot__mark">AZ</div>
-      <div class="boot__bar"><span></span></div>
-      <div class="boot__log mono">INITIALISING SYSTEM</div>
-    </div>
-  </div>
-
-  <header class="nav" id="top">
-    <div class="nav__inner container">
-      <a class="nav__brand" href="#hero" aria-label="Home">
-        <span class="nav__mark" data-bind="profile.initials">AZ</span>
-        <span class="nav__name" data-bind="profile.shortName">Anas Zuhairi</span>
+  <header class="nav">
+    <div class="wrap nav__inner">
+      <a class="brand" href="#top" aria-label="Back to top">
+        <span class="brand__mark" data-bind="profile.initials">AZ</span>
+        <span class="brand__text">
+          <strong data-bind="profile.shortName">Anas Zuhairi</strong>
+          <span class="mono brand__section" aria-live="polite">Portfolio</span>
+        </span>
       </a>
-      <nav class="nav__links" aria-label="Primary">
+      <nav class="nav__links" id="nav-links" aria-label="Primary">
         <a href="#about">About</a>
         <a href="#experience">Experience</a>
         <a href="#projects">Projects</a>
         <a href="#skills">Skills</a>
         <a href="#updates">Updates</a>
         <a href="#gallery">Gallery</a>
-        <a href="#contact" class="nav__cta">Contact</a>
+        <a href="#contact">Contact</a>
       </nav>
-      <button class="nav__toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
+      <a class="btn btn--dark btn--sm nav__cv" id="nav-cv" href="#contact">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+        <span>Download CV</span>
+      </a>
+      <button class="nav__toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><span></span><span></span></button>
     </div>
   </header>
 
-  <main>
-    <!-- HERO -->
-    <section class="hero" id="hero">
-      <canvas class="hero__canvas" aria-hidden="true"></canvas>
-      <div class="hero__fade" aria-hidden="true"></div>
-      <div class="container hero__grid">
-        <div class="hero__copy">
-          <p class="eyebrow mono reveal-hero"><span class="dot-live"></span><span data-bind="profile.eyebrow">Robotics & Automation · UniMAP</span></p>
-          <h1 class="hero__title">
-            <span class="line"><span class="split" data-bind="profile.shortName">Anas Zuhairi</span></span>
+  <main id="main">
+    <!-- ============ HERO (bento) ============ -->
+    <section class="hero" id="top" aria-labelledby="hero-name">
+      <div class="hero__bg" aria-hidden="true">
+        <div class="hero__grid"></div>
+        <div class="hero__spot"></div>
+        <svg class="hero__traces"></svg>
+      </div>
+
+      <div class="wrap bento">
+        <article class="cell cell--intro reveal">
+          <span class="ticks" aria-hidden="true"></span>
+          <p class="eyebrow mono"><span class="led"></span><span data-bind="profile.eyebrow">Robotics & Automation · UniMAP</span></p>
+          <h1 class="hero__name" id="hero-name">
+            <span class="line"><span data-bind="profile.firstLine">Anas</span></span>
+            <span class="line"><span class="accent" data-bind="profile.secondLine">Zuhairi</span></span>
           </h1>
-          <div class="hero__role reveal-hero mono">
-            <span class="hero__role-prefix">&gt;</span>
-            <span class="typer" aria-live="polite"></span><span class="caret"></span>
-          </div>
-          <p class="hero__tagline reveal-hero" data-bind="profile.tagline"></p>
-          <div class="hero__ctas reveal-hero">
-            <a class="btn btn--primary magnetic" href="#projects"><span>Explore projects</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
-            <a class="btn btn--ghost magnetic" href="#contact"><span>Get in touch</span></a>
-            <a class="btn btn--icon magnetic" data-href="profile.linkedin" href="#" target="_blank" rel="noopener" aria-label="LinkedIn profile">
+          <p class="hero__tagline" data-bind="profile.tagline"></p>
+          <ul class="roles" id="roles" aria-label="Focus areas"></ul>
+          <div class="hero__ctas">
+            <a class="btn btn--accent" href="#projects"><span>View projects</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <a class="btn btn--line" href="#contact"><span>Contact me</span></a>
+            <a class="btn btn--line btn--icon" data-href="profile.linkedin" href="#" target="_blank" rel="noopener" aria-label="LinkedIn profile">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path class="fill" d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.75h4v11H3zM9.5 9.75h3.8v1.5h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1v5.45h-4v-4.83c0-1.15-.02-2.63-1.6-2.63-1.6 0-1.85 1.25-1.85 2.55v4.91h-4z"/></svg>
             </a>
           </div>
-          <p class="hero__status mono reveal-hero"><span class="status-dot"></span><span data-bind="profile.availability"></span></p>
+        </article>
+
+        <figure class="cell cell--photo reveal" id="photo-cell">
+          <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
+          <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
+          <img class="photo" alt="" hidden>
+          <div class="photo__fallback" aria-hidden="true"><span data-bind="profile.initials">AZ</span></div>
+          <figcaption class="photo__cap mono"></figcaption>
+        </figure>
+
+        <div class="cell cell--status reveal">
+          <span class="mono label">Status</span>
+          <p><span class="dot-ok" aria-hidden="true"></span><span data-bind="profile.availability"></span></p>
+          <span class="mono label">Based in</span>
+          <p data-bind="profile.location"></p>
         </div>
-        <div class="hero__visual reveal-hero" aria-hidden="true">
-          <div class="avatar">
-            <svg class="avatar__rings" viewBox="0 0 400 400">
-              <defs>
-                <linearGradient id="ringGrad" x1="0" x2="1" y1="0" y2="1">
-                  <stop offset="0" stop-color="#0a5cff"/>
-                  <stop offset="1" stop-color="#00b8ff"/>
-                </linearGradient>
-              </defs>
-              <circle class="r r1" cx="200" cy="200" r="186"/>
-              <circle class="r r2" cx="200" cy="200" r="168"/>
-              <circle class="r r3" cx="200" cy="200" r="150"/>
-              <g class="ticks"></g>
-              <g class="orbit o1"><circle cx="200" cy="14" r="5"/></g>
-              <g class="orbit o2"><circle cx="200" cy="32" r="3.5"/></g>
-            </svg>
-            <div class="avatar__core">
-              <img class="avatar__img" alt="" hidden>
-              <span class="avatar__initials" data-bind="profile.initials">AZ</span>
-            </div>
-            <div class="chip chip--a mono"><span class="chip__led"></span>PLC · ONLINE</div>
-            <div class="chip chip--b mono"><span class="chip__led chip__led--cyan"></span>VISION · 98.4%</div>
-            <div class="chip chip--c mono"><span class="chip__led chip__led--amber"></span>WebXR · READY</div>
-          </div>
-        </div>
+
+        <div class="stats" id="stats"></div>
       </div>
-      <a class="hero__scroll mono" href="#about"><span>Scroll</span><i></i></a>
     </section>
 
-    <!-- STATS MARQUEE -->
-    <section class="stats" aria-label="Highlights">
-      <div class="container stats__grid" id="stats"></div>
-    </section>
-
-    <!-- ABOUT -->
-    <section class="section" id="about">
-      <div class="container">
-        <header class="section__head reveal">
-          <span class="section__index mono">01</span>
-          <h2 class="section__title">About</h2>
-          <p class="section__kicker">Engineer-in-training with a factory-floor mindset.</p>
+    <!-- ============ ABOUT ============ -->
+    <section class="section" id="about" data-index="01" aria-labelledby="about-title">
+      <div class="wrap">
+        <header class="head reveal">
+          <span class="head__idx mono">01</span>
+          <h2 class="head__title" id="about-title">About</h2>
+          <p class="head__kicker">Engineer-in-training with a factory-floor mindset.</p>
         </header>
         <div class="about">
           <div class="about__text reveal" id="about-text"></div>
-          <dl class="about__facts reveal" id="about-facts"></dl>
+          <dl class="facts reveal" id="about-facts"></dl>
         </div>
       </div>
     </section>
 
-    <!-- EXPERIENCE -->
-    <section class="section section--soft" id="experience">
-      <div class="container">
-        <header class="section__head reveal">
-          <span class="section__index mono">02</span>
-          <h2 class="section__title">Experience</h2>
-          <p class="section__kicker">Semiconductor and machine-vision manufacturing, Penang.</p>
+    <!-- ============ EXPERIENCE ============ -->
+    <section class="section section--alt" id="experience" data-index="02" aria-labelledby="exp-title">
+      <div class="wrap">
+        <header class="head reveal">
+          <span class="head__idx mono">02</span>
+          <h2 class="head__title" id="exp-title">Experience</h2>
+          <p class="head__kicker">Semiconductor and machine-vision manufacturing, Penang.</p>
         </header>
         <ol class="timeline" id="timeline">
-          <span class="timeline__rail" aria-hidden="true"><span class="timeline__fill"></span></span>
+          <li class="timeline__rail" aria-hidden="true"><span></span></li>
         </ol>
       </div>
     </section>
 
-    <!-- PROJECTS -->
-    <section class="section" id="projects">
-      <div class="container">
-        <header class="section__head reveal">
-          <span class="section__index mono">03</span>
-          <h2 class="section__title">Projects</h2>
-          <p class="section__kicker">From ladder logic to virtual reality.</p>
+    <!-- ============ PROJECTS ============ -->
+    <section class="section" id="projects" data-index="03" aria-labelledby="proj-title">
+      <div class="wrap">
+        <header class="head reveal">
+          <span class="head__idx mono">03</span>
+          <h2 class="head__title" id="proj-title">Projects</h2>
+          <p class="head__kicker">From ladder logic to virtual reality.</p>
         </header>
         <div class="projects" id="projects-list"></div>
       </div>
     </section>
 
-    <!-- SKILLS -->
-    <section class="section section--soft" id="skills">
-      <div class="container">
-        <header class="section__head reveal">
-          <span class="section__index mono">04</span>
-          <h2 class="section__title">Skills</h2>
-          <p class="section__kicker">Core competencies & technical toolkit.</p>
+    <!-- ============ SKILLS ============ -->
+    <section class="section section--alt" id="skills" data-index="04" aria-labelledby="skills-title">
+      <div class="wrap">
+        <header class="head reveal">
+          <span class="head__idx mono">04</span>
+          <h2 class="head__title" id="skills-title">Skills</h2>
+          <p class="head__kicker">Core competencies and technical toolkit.</p>
         </header>
         <div class="skills" id="skills-list"></div>
       </div>
     </section>
 
-    <!-- EDUCATION + LEADERSHIP -->
-    <section class="section" id="education">
-      <div class="container">
-        <header class="section__head reveal">
-          <span class="section__index mono">05</span>
-          <h2 class="section__title">Education & Leadership</h2>
-          <p class="section__kicker">Built step by step — certificate, diploma, degree.</p>
+    <!-- ============ EDUCATION & LEADERSHIP ============ -->
+    <section class="section" id="education" data-index="05" aria-labelledby="edu-title">
+      <div class="wrap">
+        <header class="head reveal">
+          <span class="head__idx mono">05</span>
+          <h2 class="head__title" id="edu-title">Education & Leadership</h2>
+          <p class="head__kicker">Certificate, diploma, degree — and the teams along the way.</p>
         </header>
         <div class="edu-lead">
           <div>
-            <h3 class="sub-title mono">// Education</h3>
-            <div class="edu" id="edu-list"></div>
+            <h3 class="sub mono">Education</h3>
+            <ol class="edu" id="edu-list"></ol>
           </div>
           <div>
-            <h3 class="sub-title mono">// Leadership & involvement</h3>
-            <div class="lead" id="lead-list"></div>
+            <h3 class="sub mono">Leadership & involvement</h3>
+            <ol class="lead" id="lead-list"></ol>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- UPDATES / LINKEDIN -->
-    <section class="section section--soft" id="updates">
-      <div class="container">
-        <header class="section__head reveal">
-          <span class="section__index mono">06</span>
-          <h2 class="section__title">Latest updates</h2>
-          <p class="section__kicker">Synced from LinkedIn and published here automatically.</p>
+    <!-- ============ UPDATES ============ -->
+    <section class="section section--alt" id="updates" data-index="06" aria-labelledby="upd-title">
+      <div class="wrap">
+        <header class="head reveal">
+          <span class="head__idx mono">06</span>
+          <h2 class="head__title" id="upd-title">Latest updates</h2>
+          <p class="head__kicker">News and LinkedIn posts, published here automatically.</p>
         </header>
         <div class="updates" id="updates-list"></div>
-        <div class="updates__foot reveal">
-          <a class="btn btn--ghost magnetic" data-href="profile.linkedin" href="#" target="_blank" rel="noopener"><span>Follow on LinkedIn</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+        <div class="center reveal">
+          <a class="btn btn--line" data-href="profile.linkedin" href="#" target="_blank" rel="noopener"><span>Follow on LinkedIn</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
         </div>
       </div>
     </section>
 
-    <!-- GALLERY -->
-    <section class="section" id="gallery">
-      <div class="container">
-        <header class="section__head reveal">
-          <span class="section__index mono">07</span>
-          <h2 class="section__title">Gallery</h2>
-          <p class="section__kicker">Prototypes, events and work in progress.</p>
+    <!-- ============ GALLERY ============ -->
+    <section class="section" id="gallery" data-index="07" aria-labelledby="gal-title">
+      <div class="wrap">
+        <header class="head reveal">
+          <span class="head__idx mono">07</span>
+          <h2 class="head__title" id="gal-title">Gallery</h2>
+          <p class="head__kicker">Prototypes, events and work in progress.</p>
         </header>
         <div class="gallery" id="gallery-list"></div>
       </div>
     </section>
 
-    <!-- CONTACT -->
-    <section class="section contact" id="contact">
-      <div class="container">
-        <div class="contact__card reveal">
-          <div class="contact__grid-bg" aria-hidden="true"></div>
-          <span class="section__index mono">08</span>
-          <h2 class="contact__title">Let's build something<br><span class="grad">that runs itself.</span></h2>
-          <p class="contact__lead">Internships, automation projects, STEM outreach or a chat about PLCs and VR — my inbox is open.</p>
-          <div class="contact__links" id="contact-links"></div>
+    <!-- ============ CONTACT ============ -->
+    <section class="section contact" id="contact" data-index="08" aria-labelledby="contact-title">
+      <div class="wrap">
+        <div class="contact__panel reveal">
+          <div class="contact__grid" aria-hidden="true"></div>
+          <div class="contact__copy">
+            <span class="head__idx mono head__idx--inv">08</span>
+            <h2 class="contact__title" id="contact-title">Let’s build something<br>that runs itself.</h2>
+            <p class="contact__lead">Internships, automation projects, STEM outreach, or a chat about PLCs and VR — my inbox is open.</p>
+          </div>
+          <ul class="contact__list" id="contact-links"></ul>
         </div>
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <div class="container footer__inner">
-      <span class="mono">© <span id="year"></span> <span data-bind="profile.name">Anas Zuhairi bin Zullkeffle</span></span>
-      <span class="mono footer__sys"><span class="status-dot"></span>All systems nominal · <a href="admin.html">Edit site</a></span>
+    <div class="wrap footer__inner mono">
+      <span>© <span id="year"></span> <span data-bind="profile.name">Anas Zuhairi bin Zullkeffle</span></span>
+      <span><a href="#top">Back to top ↑</a> · <a href="admin.html">Edit site</a></span>
     </div>
   </footer>
 
   <div class="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
-    <button class="lightbox__close" aria-label="Close">×</button>
-    <button class="lightbox__nav lightbox__prev" aria-label="Previous">‹</button>
-    <figure><img alt=""><figcaption></figcaption></figure>
-    <button class="lightbox__nav lightbox__next" aria-label="Next">›</button>
+    <button class="lb-btn lightbox__close" type="button" aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <button class="lb-btn lightbox__prev" type="button" aria-label="Previous image">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+    </button>
+    <figure><img alt=""><figcaption class="mono"></figcaption></figure>
+    <button class="lb-btn lightbox__next" type="button" aria-label="Next image">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+    </button>
   </div>
 
   <noscript><p style="padding:2rem;text-align:center">This portfolio needs JavaScript to load its content.</p></noscript>

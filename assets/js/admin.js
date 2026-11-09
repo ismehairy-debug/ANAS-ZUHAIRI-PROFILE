@@ -108,7 +108,8 @@
       id: 'profile', label: 'Profile', icon: 'user', root: 'site', path: 'profile', type: 'object',
       intro: 'Your name, photo, headline and contact details.',
       fields: [
-        { key: 'photo', label: 'Profile photo', type: 'image', wide: true, help: 'A square photo works best. It appears inside the animated ring at the top of the site.' },
+        { key: 'photo', label: 'Profile photo', type: 'image', wide: true, help: 'A portrait (vertical) photo works best. It appears in the tall card at the top of the site.' },
+        { key: 'photoCaption', label: 'Photo caption', wide: true, help: 'Optional — shown on the photo, e.g. where it was taken. Leave empty to hide.' },
         { key: 'shortName', label: 'Display name' },
         { key: 'name', label: 'Full name' },
         { key: 'initials', label: 'Initials (logo)' },

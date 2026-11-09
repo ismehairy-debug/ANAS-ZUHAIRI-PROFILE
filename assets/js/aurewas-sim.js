@@ -8,12 +8,11 @@
   'use strict';
 
   const C = {
-    ink: '#0a1324', ink2: '#26344d', muted: '#7a8aa3', line: '#d6dfeb', soft: '#eef3fa',
-    accent: '#0a5cff', accent2: '#00b8ff', ok: '#12b886', amber: '#f59f00', red: '#ef4444',
-    metal: '#8795a8', plastic: '#2f9bff', paper: '#d9b77a'
+    ink: '#020617', ink2: '#334155', muted: '#64748B', line: '#CBD5E1', soft: '#F1F5F9',
+    accent: '#0369A1', accent2: '#0EA5E9', ok: '#059669', amber: '#D97706', red: '#DC2626',
+    metal: '#8795a8', plastic: '#0EA5E9', paper: '#d9b77a', belt: '#0F172A', beltHi: '#1E293B'
   };
   const MONO = '"JetBrains Mono", ui-monospace, monospace';
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function rr(ctx, x, y, w, h, r) {
     r = Math.min(r, w / 2, h / 2);
@@ -28,12 +27,24 @@
   const ease = t => 1 - Math.pow(1 - t, 3);
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
 
-  /** Generic runner: handles DPR, resize, visibility and the RAF loop. */
-  function run(canvas, scene) {
+  /**
+   * Generic runner: handles DPR, resize, visibility and the RAF loop.
+   * Only animates while on screen, the tab is visible and the user has not paused it.
+   * Returns a controller { play, pause, isPlaying } for the page's Pause/Play button.
+   */
+  function run(canvas, scene, opts = {}) {
     const ctx = canvas.getContext('2d');
     let W = 0, H = 0, dpr = 1, raf = 0, last = 0, visible = false;
+    let userPaused = opts.autoplay === false;
     const state = scene.init();
+    let primed = false;
 
+    function prime() {
+      // simulate a few seconds so a paused/static frame is meaningful
+      if (primed) return;
+      primed = true;
+      for (let i = 0; i < 160; i++) { ctx.clearRect(0, 0, W, H); scene.frame(ctx, state, W, H, 1 / 30); }
+    }
     function resize() {
       const r = canvas.getBoundingClientRect();
       dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -41,7 +52,8 @@
       canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       scene.layout && scene.layout(state, W, H);
-      if (!visible || reduceMotion) draw(0);
+      if (userPaused) prime();
+      if (!raf) draw(0);
     }
     function draw(dt) {
       ctx.clearRect(0, 0, W, H);
@@ -53,20 +65,18 @@
       draw(dt);
       raf = requestAnimationFrame(loop);
     }
-    function start() { if (!raf && !reduceMotion) { last = 0; raf = requestAnimationFrame(loop); } }
+    function start() { if (!raf && !userPaused && visible && !document.hidden) { last = 0; raf = requestAnimationFrame(loop); } }
     function stop() { cancelAnimationFrame(raf); raf = 0; }
 
     new ResizeObserver(resize).observe(canvas);
-    new IntersectionObserver(es => {
-      visible = es[0].isIntersecting;
-      visible && !document.hidden ? start() : stop();
-    }, { threshold: 0.05 }).observe(canvas);
-    document.addEventListener('visibilitychange', () => (document.hidden || !visible) ? stop() : start());
+    new IntersectionObserver(es => { visible = es[0].isIntersecting; visible ? start() : stop(); }, { threshold: 0.05 }).observe(canvas);
+    document.addEventListener('visibilitychange', () => (document.hidden ? stop() : start()));
     resize();
-    if (reduceMotion) {
-      // render a few simulated seconds so the static frame is meaningful
-      for (let i = 0; i < 160; i++) { ctx.clearRect(0, 0, W, H); scene.frame(ctx, state, W, H, 1 / 30); }
-    }
+    return {
+      play() { userPaused = false; start(); },
+      pause() { userPaused = true; stop(); },
+      isPlaying() { return !userPaused; }
+    };
   }
 
   /* ------------------------------------------------------------------
@@ -148,7 +158,7 @@
       L.st.forEach((x, i) => {
         const bx = x - L.binW / 2, by = L.binY;
         // chute
-        ctx.fillStyle = 'rgba(10,92,255,0.04)';
+        ctx.fillStyle = 'rgba(3,105,161,0.05)';
         ctx.fillRect(x - L.size * 0.9, L.beltY + L.beltH, L.size * 1.8, by - (L.beltY + L.beltH));
         ctx.save();
         if (s.pulse[i] > 0) { ctx.shadowColor = cols[i]; ctx.shadowBlur = 18 * s.pulse[i]; }
@@ -168,7 +178,7 @@
       // belt
       ctx.save();
       rr(ctx, L.x0, L.beltY, L.x1 - L.x0, L.beltH, L.beltH / 2);
-      ctx.fillStyle = '#1b2638'; ctx.fill();
+      ctx.fillStyle = C.belt; ctx.fill();
       ctx.clip();
       ctx.strokeStyle = 'rgba(255,255,255,0.08)'; ctx.lineWidth = 2;
       for (let x = L.x0 - 18 + s.belt; x < L.x1 + 18; x += 18) {
@@ -178,7 +188,7 @@
       // rollers
       [L.x0 + L.beltH / 2, L.x1 - L.beltH / 2].forEach(rx => {
         ctx.beginPath(); ctx.arc(rx, L.beltY + L.beltH / 2, L.beltH * 0.32, 0, Math.PI * 2);
-        ctx.fillStyle = '#2b3a52'; ctx.fill();
+        ctx.fillStyle = C.beltHi; ctx.fill();
         ctx.save(); ctx.translate(rx, L.beltY + L.beltH / 2); ctx.rotate(s.t * 4);
         ctx.strokeStyle = 'rgba(255,255,255,0.35)'; ctx.lineWidth = 1.5;
         ctx.beginPath(); ctx.moveTo(-L.beltH * 0.2, 0); ctx.lineTo(L.beltH * 0.2, 0); ctx.stroke();
@@ -320,7 +330,7 @@
 
       // viewfinder
       const vw = Math.min(W * 0.5, 280), vh = size * 3.2, vx = W / 2 - vw / 2, vy = cy - vh / 2;
-      ctx.fillStyle = 'rgba(10,92,255,0.04)'; ctx.fillRect(vx, vy, vw, vh);
+      ctx.fillStyle = 'rgba(3,105,161,0.05)'; ctx.fillRect(vx, vy, vw, vh);
       ctx.strokeStyle = C.accent; ctx.lineWidth = 2;
       const cl = 16;
       [[vx, vy, 1, 1], [vx + vw, vy, -1, 1], [vx, vy + vh, 1, -1], [vx + vw, vy + vh, -1, -1]].forEach(([x, y, sx, sy]) => {
@@ -410,7 +420,7 @@
       ctx.globalAlpha = e;
       const nx = qx + n * (cw + gap) - off;
       rr(ctx, nx, qy, cw, ch, 8);
-      ctx.fillStyle = 'rgba(10,92,255,0.06)'; ctx.fill(); ctx.strokeStyle = C.accent; ctx.stroke();
+      ctx.fillStyle = 'rgba(3,105,161,0.07)'; ctx.fill(); ctx.strokeStyle = C.accent; ctx.stroke();
       ctx.globalAlpha = 1;
 
       // stock bars
@@ -430,9 +440,10 @@
   };
 
   window.ProjectVisuals = {
-    mount(canvas, kind) {
+    mount(canvas, kind, opts) {
       const scene = { aurewas, vision, database }[kind];
-      if (scene && canvas.getContext) run(canvas, scene);
+      if (scene && canvas.getContext) return run(canvas, scene, opts);
+      return { play() {}, pause() {}, isPlaying: () => false };
     }
   };
 })();
