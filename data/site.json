@@ -1,18 +1,20 @@
 {
   "meta": {
-    "title": "Anas Zuhairi — Robotics & Automation",
-    "description": "Portfolio of Anas Zuhairi bin Zullkeffle — Electrical Engineering Technology (Robotics & Automation) student at UniMAP. PLC automation, machine vision and WebXR projects.",
+    "title": "Anas Zuhairi — Robotics & Automation Engineering Student | PLC · Machine Vision · Precision Manufacturing",
+    "description": "Anas Zuhairi bin Zullkeffle — Robotics & Automation engineering technology student at UniMAP (Malaysia) with 2+ years of semiconductor and machine-vision industry experience at Micron and ViTrox. PLC automation, machine vision and WebXR projects. Open to internships.",
     "repo": {
       "owner": "ismehairy-debug",
       "name": "ANAS-ZUHAIRI-PROFILE",
       "branch": "main"
-    }
+    },
+    "siteUrl": "https://ismehairy-debug.github.io/ANAS-ZUHAIRI-PROFILE/"
   },
   "profile": {
     "name": "Anas Zuhairi bin Zullkeffle",
     "shortName": "Anas Zuhairi",
     "initials": "AZ",
     "eyebrow": "Robotics & Automation · UniMAP",
+    "headline": "Robotics & Automation Engineering Technology Student",
     "roles": [
       "PLC & Control Systems",
       "Machine Vision Automation",
@@ -26,13 +28,71 @@
       "I enjoy turning messy real-world problems into reliable automated systems: Omron PLC logic, pneumatics and actuators, camera-based vision inspection and data-driven troubleshooting."
     ],
     "photo": "assets/uploads/2026/img-2008-0zqoq.jpg",
+    "photoCaption": "Ningbo International Youth Exchange Camp · China, Oct 2026",
+    "photoFocus": {
+      "x": 46,
+      "y": 85,
+      "zoom": 1.35
+    },
+    "badges": [
+      "2+ yrs industry · Micron & ViTrox",
+      "Robotics & Automation · UniMAP",
+      "DICE 4.0 team leader (national)"
+    ],
     "location": "Alor Setar, Kedah, Malaysia",
     "email": "anaszuhairiunimap@yahoo.com",
     "phone": "01111510221",
     "linkedin": "https://www.linkedin.com/in/hairyisme",
     "github": "https://github.com/ismehairy-debug",
+    "socials": [
+      {
+        "platform": "linkedin",
+        "label": "Anas Zuhairi",
+        "url": "https://tinyurl.com/ANAS-ZUHAIRI"
+      },
+      {
+        "platform": "whatsapp",
+        "label": "+60 11-1151 0221",
+        "url": "https://wa.link/u9izwz"
+      },
+      {
+        "platform": "telegram",
+        "label": "@hairiwasme",
+        "url": "https://t.me/hairiwasme"
+      },
+      {
+        "platform": "instagram",
+        "label": "Instagram",
+        "url": "https://bit.ly/4yN1KjK"
+      },
+      {
+        "platform": "facebook",
+        "label": "Facebook",
+        "url": "https://bit.ly/47w3hPV"
+      },
+      {
+        "platform": "github",
+        "label": "ismehairy-debug",
+        "url": "https://github.com/ismehairy-debug"
+      }
+    ],
     "resume": "assets/uploads/docs/anas-zuhairi-bin-zullkeffle---resume-1w0sa.pdf",
     "availability": "Open to internships & engineering collaborations",
+    "proofOrgs": [
+      "Micron Memory",
+      "ViTrox",
+      "UniMAP",
+      "JMTI",
+      "ILP Perlis"
+    ],
+    "searchSuggestions": [
+      "PLC",
+      "Machine vision",
+      "Micron",
+      "Precision assembly",
+      "WebXR",
+      "Leadership"
+    ],
     "facts": [
       {
         "label": "Based in",
@@ -341,36 +401,5 @@
       "description": "Represented UniMAP at Ningbo Polytechnic University, Zhejiang (18 – 24 Oct 2026)."
     }
   ],
-  "gallery": [
-    {
-      "image": "assets/img/gwm-performance.jpg",
-      "caption": "Galeri Warisan Maya — performing-arts pavilion concept",
-      "date": "2026"
-    },
-    {
-      "image": "assets/img/gwm-river-village.jpg",
-      "caption": "Galeri Warisan Maya — riverside heritage village environment",
-      "date": "2026"
-    },
-    {
-      "image": "assets/img/gwm-heritage-hall.jpg",
-      "caption": "Galeri Warisan Maya — customs & music hall",
-      "date": "2026"
-    },
-    {
-      "image": "assets/img/gwm-craftsmen.jpg",
-      "caption": "Galeri Warisan Maya — crafts & weaponry workshop",
-      "date": "2026"
-    },
-    {
-      "image": "assets/img/gwm-istana.jpg",
-      "caption": "Architecture reference — Malay palace",
-      "date": "2026"
-    },
-    {
-      "image": "assets/img/gwm-market.jpg",
-      "caption": "Galeri Warisan Maya — heritage food & market scene",
-      "date": "2026"
-    }
-  ]
+  "gallery": []
 }

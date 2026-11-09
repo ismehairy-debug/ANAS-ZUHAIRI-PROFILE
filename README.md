@@ -32,13 +32,27 @@ scripts/linkedin-sync.mjs        LinkedIn feed → data/linkedin.json
    - upgrade to GitHub Pro.
 3. **Settings → Pages → Build and deployment → Source: _GitHub Actions_.**
 4. Go to **Actions → Deploy website → Run workflow**, or push any change. Your site will be live at
-   `https://ismehairy-debug.github.io/ANAS-ZUHAIRI-PROFILE/`
+   **https://anaszuhairi.com/** (custom domain, see below). The old `https://ismehairy-debug.github.io/ANAS-ZUHAIRI-PROFILE/` address redirects there.
 
 After that, every save from the editor redeploys the site automatically within about 1 minute.
 
+### Custom domain: anaszuhairi.com
+
+In the DNS console of the company you bought the domain from, add these records. Keep any email records (Proton MX/SPF/DKIM/DMARC/verification); they don't conflict.
+
+| Type | Name | Value |
+|---|---|---|
+| A | @ | 185.199.108.153 |
+| A | @ | 185.199.109.153 |
+| A | @ | 185.199.110.153 |
+| A | @ | 185.199.111.153 |
+| CNAME | www | ismehairy-debug.github.io |
+
+Then go to **Settings → Pages → Custom domain**, enter `anaszuhairi.com`, save, and tick **Enforce HTTPS** once it is offered. Optionally, verify the domain under your account *Settings → Pages*, which protects it from takeover.
+
 ## 2. Edit the website (add pictures, change details)
 
-1. Open `https://ismehairy-debug.github.io/ANAS-ZUHAIRI-PROFILE/admin.html`. There is also an **Edit site** link in the footer.
+1. Open `https://anaszuhairi.com/admin.html`. There is also an **Edit site** link in the footer.
 2. Create a token once:
    [GitHub → Settings → Developer settings → Fine-grained tokens → Generate](https://github.com/settings/personal-access-tokens/new)
    - Repository access: **Only select repositories** → this repo
@@ -52,6 +66,18 @@ After that, every save from the editor redeploys the site automatically within a
    - **Save & publish** (or Ctrl/Cmd + S) creates one commit, and the site updates in about a minute.
 
 Unsaved edits are kept as a draft in the browser if you close the tab.
+
+**Crop & position photos.** On the profile photo, project images and gallery photos, tap **Crop & position**. Drag the picture to move it and use the zoom slider to crop in. Live previews show how it will look on the site. The original file is kept, so you can re-adjust any time.
+
+**Social media.** Go to *Profile → Social media accounts* and add, remove or reorder LinkedIn, WhatsApp, Telegram, Instagram, Facebook, GitHub and others. They appear as icons in the hero and footer, and as rows in the contact section.
+
+## Help companies find you on Google
+
+The page already includes a search-engine profile (schema.org `Person`), a canonical URL, share previews, `robots.txt` and `sitemap.xml`. To get indexed faster:
+1. Open [Google Search Console](https://search.google.com/search-console) → **Add property** → **Domain** → `anaszuhairi.com`.
+2. Verify ownership with the **DNS TXT record** Google shows you, added in the same DNS console as above. Alternatively, choose the URL-prefix property and paste the `<meta name="google-site-verification" …>` tag into `<head>` of `index.html`.
+3. **Sitemaps** → submit `sitemap.xml`.
+4. Put the website link in your LinkedIn *Contact info*, your CV and your email signature. Links from your own profiles help Google connect them.
 
 ## 3. LinkedIn → website
 

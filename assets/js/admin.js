@@ -103,24 +103,37 @@
 
   /* ---------------- schema ---------------- */
   const LINK_FIELDS = [{ key: 'label', label: 'Button label' }, { key: 'url', label: 'URL', type: 'url' }];
+  const SOCIAL_OPTIONS = [['linkedin', 'LinkedIn'], ['whatsapp', 'WhatsApp'], ['telegram', 'Telegram'], ['instagram', 'Instagram'], ['facebook', 'Facebook'], ['github', 'GitHub'], ['x', 'X (Twitter)'], ['youtube', 'YouTube'], ['tiktok', 'TikTok'], ['website', 'Website'], ['email', 'Email']];
   const SECTIONS = [
     {
       id: 'profile', label: 'Profile', icon: 'user', root: 'site', path: 'profile', type: 'object',
       intro: 'Your name, photo, headline and contact details.',
       fields: [
-        { key: 'photo', label: 'Profile photo', type: 'image', wide: true, help: 'A square photo works best. It appears inside the animated ring at the top of the site.' },
+        { key: 'photo', label: 'Profile photo', type: 'image', wide: true, focal: 'photoFocus', frames: [['Website photo', 4 / 5], ['Square thumbnail', 1]], help: 'Use “Crop & position” to move and zoom the photo. A portrait (vertical) photo works best.' },
+        { key: 'photoCaption', label: 'Photo caption', wide: true, help: 'Optional — shown under the photo, e.g. where it was taken. Leave empty to hide.' },
         { key: 'shortName', label: 'Display name' },
         { key: 'name', label: 'Full name' },
+        { key: 'headline', label: 'Job title / headline', wide: true, help: 'Shown under your name and used by Google, e.g. “Robotics & Automation Engineering Technology Student”.' },
         { key: 'initials', label: 'Initials (logo)' },
-        { key: 'eyebrow', label: 'Small label above your name' },
+        { key: 'eyebrow', label: 'Short label (used for search results)' },
         { key: 'roles', label: 'Typing animation — roles', type: 'lines', help: 'One per line.' },
         { key: 'availability', label: 'Status line', help: 'e.g. Open to internships' },
         { key: 'tagline', label: 'Tagline', type: 'textarea', wide: true },
         { key: 'summary', label: 'About me', type: 'paragraphs', wide: true, rows: 8, help: 'Leave a blank line between paragraphs.' },
         { key: 'email', label: 'Email', type: 'email' },
         { key: 'phone', label: 'Phone', help: 'Leave empty to hide it from the site.' },
-        { key: 'linkedin', label: 'LinkedIn URL', type: 'url' },
+        { key: 'linkedin', label: 'LinkedIn URL (main profile)', type: 'url' },
         { key: 'github', label: 'GitHub URL', type: 'url' },
+        { key: 'socials', label: 'Social media accounts', type: 'list', wide: true, itemName: 'account',
+          title: x => `${(SOCIAL_OPTIONS.find(o => o[0] === x.platform) || ['', 'Link'])[1]} — ${x.label || x.url || ''}`,
+          fields: [
+            { key: 'platform', label: 'Platform', type: 'select', options: SOCIAL_OPTIONS },
+            { key: 'label', label: 'Name / handle shown', help: 'e.g. @hairiwasme' },
+            { key: 'url', label: 'Link', type: 'url', wide: true }
+          ] },
+        { key: 'proofOrgs', label: 'Organisations strip (companies & schools)', type: 'tags', wide: true, help: 'Comma separated — shown under the top section, e.g. Micron Memory, ViTrox, UniMAP.' },
+        { key: 'badges', label: 'Highlight badges on your photo (max 3)', type: 'lines', wide: true, rows: 3, help: 'One per line, short — e.g. “2+ yrs industry · Micron & ViTrox”.' },
+        { key: 'searchSuggestions', label: 'Search suggestions', type: 'tags', wide: true, help: 'Comma separated — quick buttons under the search box, e.g. PLC, Machine vision, Micron.' },
         { key: 'location', label: 'Location' },
         { key: 'resume', label: 'CV / Résumé (PDF)', type: 'file', accept: 'application/pdf', help: 'Adds a “Download CV” link in the contact section.' },
         { key: 'facts', label: 'Quick facts (About section)', type: 'list', wide: true, itemName: 'fact', title: x => `${x.label || 'Label'} — ${x.value || ''}`, fields: [{ key: 'label', label: 'Label' }, { key: 'value', label: 'Value' }] }
@@ -153,7 +166,7 @@
         { key: 'status', label: 'Status badge', help: 'e.g. Prototype, In progress' },
         { key: 'featured', label: 'Featured (large card)', type: 'bool' },
         { key: 'visual', label: 'Visual', type: 'select', options: [['image', 'Photo / image'], ['aurewas', 'Animation: conveyor sorting'], ['vision', 'Animation: AI vision camera'], ['database', 'Animation: FIFO database'], ['none', 'None']] },
-        { key: 'image', label: 'Project image', type: 'image', wide: true, help: 'Used when Visual is “Photo / image”.' },
+        { key: 'image', label: 'Project image', type: 'image', wide: true, focal: 'imageFocus', frames: [['Desktop card', 4 / 3], ['Phone', 16 / 10]], help: 'Used when Visual is “Photo / image”. Use “Crop & position” to frame it.' },
         { key: 'summary', label: 'Summary', type: 'textarea', wide: true },
         { key: 'highlights', label: 'Highlights', type: 'lines', wide: true, rows: 5, help: 'One per line.' },
         { key: 'tags', label: 'Tags', type: 'tags', wide: true, help: 'Comma separated.' },
@@ -191,10 +204,15 @@
     },
     {
       id: 'gallery', label: 'Gallery', icon: 'image', root: 'site', path: 'gallery', type: 'list', itemName: 'photo', bulk: true,
-      intro: 'Add pictures to the gallery. You can select many photos at once — they are resized automatically.',
-      title: x => x.caption || 'Photo',
+      intro: 'Photos from your LinkedIn posts. Add the post’s photo and paste its link (LinkedIn → ⋯ on the post → Copy link to post): tapping the photo on the site opens the post. Paste only a link (no photo) to embed the whole post. LinkedIn posts you add under “Updates & LinkedIn” with a photo appear here automatically.',
+      title: x => x.caption || x.link || 'Photo',
       thumb: x => x.image,
-      fields: [{ key: 'image', label: 'Photo', type: 'image', wide: true }, { key: 'caption', label: 'Caption', wide: true }, { key: 'date', label: 'Date / year' }]
+      fields: [
+        { key: 'link', label: 'LinkedIn post link', type: 'url', wide: true, help: 'e.g. https://www.linkedin.com/posts/… or https://www.linkedin.com/feed/update/urn:li:activity:…' },
+        { key: 'image', label: 'Photo (optional — without a photo the post is embedded)', type: 'image', wide: true, focal: 'focus', frames: [['Gallery tile', 1], ['Wide tile', 2]] },
+        { key: 'caption', label: 'Caption', wide: true },
+        { key: 'date', label: 'Date / year' }
+      ]
     },
     {
       id: 'updates', label: 'Updates & LinkedIn', icon: 'linkedin', root: 'feed', path: 'posts', type: 'list', itemName: 'post', composer: true,
@@ -211,7 +229,11 @@
     {
       id: 'settings', label: 'SEO & settings', icon: 'gear', root: 'site', path: 'meta', type: 'object', settings: true,
       intro: 'Browser tab title and the description shown by Google and when the link is shared.',
-      fields: [{ key: 'title', label: 'Page title', wide: true }, { key: 'description', label: 'Description', type: 'textarea', wide: true, rows: 3 }]
+      fields: [
+        { key: 'title', label: 'Page title (Google headline)', wide: true, help: 'Name + role + key skills works best for recruiters searching.' },
+        { key: 'description', label: 'Description (Google snippet)', type: 'textarea', wide: true, rows: 3, help: 'About 150–160 characters.' },
+        { key: 'siteUrl', label: 'Website address', type: 'url', wide: true }
+      ]
     }
   ];
   const ICONS = {
@@ -298,6 +320,95 @@
   }
   const resolve = v => (v && S.pending[v] ? S.pending[v].dataUrl : v || '');
 
+  /* ---------------- crop & position (non-destructive) ----------------
+     Stores { x, y, zoom } — the focal point in % and a zoom factor. The site
+     shows the image with object-position + scale around that point, so the
+     original file is never cut and can be re-adjusted at any time. */
+  const clampN = (v, a, b) => Math.min(b, Math.max(a, v));
+  function applyFocusStyle(img, f) {
+    const x = f && isFinite(f.x) ? f.x : 50, y = f && isFinite(f.y) ? f.y : 50, z = f && f.zoom > 0 ? f.zoom : 1;
+    img.style.objectFit = 'cover';
+    img.style.objectPosition = `${x}% ${y}%`;
+    img.style.transformOrigin = `${x}% ${y}%`;
+    img.style.transform = `scale(${z})`;
+  }
+  function openCropper(url, initial, frames, onSave) {
+    const val = { x: 50, y: 50, zoom: 1, ...(initial || {}) };
+    const mainImg = el('img', { alt: 'Photo being adjusted', src: url, draggable: 'false' });
+    const main = el('div', { class: 'crop__main', tabindex: '0', role: 'application', 'aria-label': 'Drag to move the photo. Arrow keys move, plus and minus zoom.' },
+      mainImg, el('span', { class: 'crop__thirds', 'aria-hidden': 'true' }));
+    main.style.aspectRatio = String(frames[0][1]);
+    main.style.width = `min(100%, calc(60vh * ${frames[0][1]}))`;
+    const previews = frames.map(([label, ratio]) => {
+      const im = el('img', { alt: '', src: url });
+      const fr = el('div', { class: 'crop__mini' }, im); fr.style.aspectRatio = String(ratio);
+      return { im, node: el('figure', { class: 'crop__prev' }, fr, el('figcaption', { class: 'mono', text: label })) };
+    });
+    const zoom = el('input', { type: 'range', min: '1', max: '3', step: '0.01', 'aria-label': 'Zoom' });
+    const zoomOut = el('span', { class: 'mono crop__zv' });
+    const xIn = el('input', { type: 'range', min: '0', max: '100', step: '1', 'aria-label': 'Horizontal position' });
+    const yIn = el('input', { type: 'range', min: '0', max: '100', step: '1', 'aria-label': 'Vertical position' });
+    const paint = () => {
+      [mainImg, ...previews.map(p => p.im)].forEach(im => applyFocusStyle(im, val));
+      zoom.value = val.zoom; xIn.value = val.x; yIn.value = val.y;
+      zoomOut.textContent = Math.round(val.zoom * 100) + '%';
+    };
+    zoom.addEventListener('input', () => { val.zoom = +zoom.value; paint(); });
+    xIn.addEventListener('input', () => { val.x = +xIn.value; paint(); });
+    yIn.addEventListener('input', () => { val.y = +yIn.value; paint(); });
+
+    // Drag to pan: convert pixel movement into focal-point % for the current size & zoom.
+    let drag = null;
+    main.addEventListener('pointerdown', e => { drag = { x: e.clientX, y: e.clientY }; main.setPointerCapture(e.pointerId); main.classList.add('is-drag'); });
+    main.addEventListener('pointermove', e => {
+      if (!drag) return;
+      const dx = e.clientX - drag.x, dy = e.clientY - drag.y; drag = { x: e.clientX, y: e.clientY };
+      const fw = main.clientWidth, fh = main.clientHeight, iw = mainImg.naturalWidth || fw, ih = mainImg.naturalHeight || fh;
+      const s = Math.max(fw / iw, fh / ih);
+      const spanX = iw * s - fw + fw * (val.zoom - 1), spanY = ih * s - fh + fh * (val.zoom - 1);
+      if (spanX > 0.5) val.x = clampN(val.x - dx / spanX * 100, 0, 100);
+      if (spanY > 0.5) val.y = clampN(val.y - dy / spanY * 100, 0, 100);
+      paint();
+    });
+    const end = () => { drag = null; main.classList.remove('is-drag'); };
+    main.addEventListener('pointerup', end); main.addEventListener('pointercancel', end);
+    main.addEventListener('wheel', e => { e.preventDefault(); val.zoom = clampN(val.zoom - e.deltaY * 0.002, 1, 3); paint(); }, { passive: false });
+    main.addEventListener('keydown', e => {
+      const step = e.shiftKey ? 10 : 2;
+      const k = { ArrowLeft: ['x', -step], ArrowRight: ['x', step], ArrowUp: ['y', -step], ArrowDown: ['y', step] }[e.key];
+      if (k) { e.preventDefault(); val[k[0]] = clampN(val[k[0]] + k[1], 0, 100); paint(); }
+      if (e.key === '+' || e.key === '=') { val.zoom = clampN(val.zoom + 0.05, 1, 3); paint(); }
+      if (e.key === '-') { val.zoom = clampN(val.zoom - 0.05, 1, 3); paint(); }
+    });
+
+    const close = () => { overlay.remove(); document.body.style.overflow = ''; document.removeEventListener('keydown', esc); };
+    const esc = e => { if (e.key === 'Escape') close(); };
+    const overlay = el('div', { class: 'crop', role: 'dialog', 'aria-modal': 'true', 'aria-label': 'Crop and position image' },
+      el('div', { class: 'crop__card' },
+        el('header', { class: 'crop__head' },
+          el('h2', { text: 'Crop & position' }),
+          el('p', { class: 'muted', text: 'Drag the photo to move it, use the zoom slider to crop in. The previews show how it looks on the site. Your original photo is kept, so you can change this again any time.' })),
+        el('div', { class: 'crop__body' },
+          main,
+          el('div', { class: 'crop__side' },
+            el('div', { class: 'crop__previews' }, previews.map(p => p.node)),
+            el('label', { class: 'crop__ctl' }, el('span', null, 'Zoom ', zoomOut), zoom),
+            el('label', { class: 'crop__ctl' }, el('span', { text: 'Left ↔ right' }), xIn),
+            el('label', { class: 'crop__ctl' }, el('span', { text: 'Up ↕ down' }), yIn))),
+        el('footer', { class: 'crop__foot' },
+          el('button', { type: 'button', class: 'btn btn--ghost btn--sm', text: 'Reset', onclick: () => { Object.assign(val, { x: 50, y: 50, zoom: 1 }); paint(); } }),
+          el('span', { class: 'crop__spacer' }),
+          el('button', { type: 'button', class: 'btn btn--ghost btn--sm', text: 'Cancel', onclick: close }),
+          el('button', { type: 'button', class: 'btn btn--primary btn--sm', text: 'Apply', onclick: () => {
+            onSave({ x: Math.round(val.x * 10) / 10, y: Math.round(val.y * 10) / 10, zoom: Math.round(val.zoom * 100) / 100 });
+            close(); toast('Position saved — press “Save & publish” to update the site.', 'ok');
+          } }))));
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(); });
+    document.addEventListener('keydown', esc);
+    document.body.append(overlay); document.body.style.overflow = 'hidden';
+    paint(); main.focus();
+  }
+
   /* ---------------- field renderers ---------------- */
   function field(spec, obj, onChange) {
     const id = 'f' + (++uid);
@@ -354,23 +465,31 @@
     const pathEl = el('span', { class: 'media__path mono' });
     const fileIn = el('input', { type: 'file', id, accept: spec.accept || (isImg ? 'image/*' : '*/*'), hidden: true });
     const urlIn = el('input', { type: 'text', placeholder: isImg ? 'or paste an image URL / path' : 'or paste a file URL' });
+    const focalBtn = spec.focal ? el('button', { type: 'button', class: 'btn btn--primary btn--sm', text: 'Crop & position', onclick: () => {
+      if (!obj[spec.key]) { toast('Upload an image first.', 'err'); return; }
+      openCropper(resolve(obj[spec.key]), obj[spec.focal], spec.frames || [['Preview', 1]], val => { obj[spec.focal] = val; refresh(); onChange(); });
+    } }) : null;
     const refresh = () => {
       const v = obj[spec.key] || '';
       preview.replaceChildren();
       preview.classList.toggle('is-empty', !v);
       if (v && isImg) {
         const im = el('img', { alt: '', src: resolve(v) });
+        if (spec.focal) applyFocusStyle(im, obj[spec.focal]);
         im.onerror = () => { preview.replaceChildren(el('span', { class: 'mono', text: 'Uploaded — appears after publish' })); };
         preview.append(im);
-      } else if (v) preview.append(el('span', { class: 'mono', text: '📄 ' + v.split('/').pop() }));
+      } else if (v) preview.append(el('span', { class: 'mono', text: 'File: ' + v.split('/').pop() }));
       else preview.append(el('span', { text: isImg ? 'Drop an image here' : 'No file' }));
+      if (spec.frames) preview.style.aspectRatio = String(spec.frames[0][1]);
       pathEl.textContent = v ? (S.pending[v] ? 'new · ' : '') + v : '';
       urlIn.value = v;
+      if (focalBtn) focalBtn.disabled = !v;
     };
     const take = async file => {
       try {
         toast('Preparing ' + (isImg ? 'image' : 'file') + '…', 'busy');
         obj[spec.key] = await addUpload(file);
+        if (spec.focal) delete obj[spec.focal]; // new picture: start from the centre
         refresh(); onChange();
         toast((isImg ? 'Image' : 'File') + ' added — press “Save & publish” to upload it.', 'ok');
       } catch (e) { toast(e.message, 'err'); }
@@ -382,7 +501,8 @@
     preview.addEventListener('dragleave', () => preview.classList.remove('is-drag'));
     preview.addEventListener('drop', e => { e.preventDefault(); preview.classList.remove('is-drag'); const f = e.dataTransfer.files[0]; if (f) take(f); });
     const actions = el('div', { class: 'media__actions' },
-      el('button', { type: 'button', class: 'btn btn--ghost btn--sm', text: isImg ? 'Upload image' : 'Upload file', onclick: () => fileIn.click() }),
+      focalBtn,
+      el('button', { type: 'button', class: 'btn btn--ghost btn--sm', text: isImg ? (spec.focal ? 'Replace image' : 'Upload image') : 'Upload file', onclick: () => fileIn.click() }),
       el('button', { type: 'button', class: 'btn btn--ghost btn--sm', text: 'Remove', onclick: () => { obj[spec.key] = ''; refresh(); onChange(); } }),
       urlIn);
     box.append(preview, el('div', { class: 'media__side' }, actions, pathEl), fileIn);
